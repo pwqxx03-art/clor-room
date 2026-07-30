@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="#ffffff" name="theme-color"/>
+<title>푸루카 · Official Creator Archive</title>
+<style>
+:root{--blue:#1b378c;--blue2:#284ca7;--ink:#15224e;--muted:#64709a;--paper:#fff;--soft:#f5f6fb;--line:#d9def0;--pink:#ff5d88;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+button,input{font:inherit}
+a{color:inherit}
+#celebration{position:fixed;inset:0;pointer-events:none;z-index:80}
+.topbar{height:72px;padding:0 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #edf0f7;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:40}
+.brand{font-size:23px;font-weight:1000;letter-spacing:-.06em;color:var(--blue);text-decoration:none}
+.nav{display:flex;gap:25px;align-items:center}
+.nav a{font-size:12px;font-weight:900;letter-spacing:.08em;text-decoration:none;color:var(--blue)}
+.nav a:hover{text-decoration:underline;text-underline-offset:5px}
+.header-side{display:flex;gap:14px;font-size:11px;font-weight:800;color:var(--blue)}
+.hero{min-height:96vh;padding:62px 24px 72px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
+.halftone-orb{display:none}
+.hero-inner{width:min(1200px,100%);margin:0 auto;padding-bottom:96px;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.hero-kicker{display:none}
+.hero-kicker::before,.hero-kicker::after{display:none}
+.hero h1{display:none}
+.hero h1 span{display:none}
+.hero-sub{display:none}
+.halftone-clover{position:relative;width:min(26vw,330px);height:min(22vw,240px);margin:8px auto 4px;opacity:.18;pointer-events:none}
+.halftone-clover::before{content:'';position:absolute;inset:0;border-radius:42% 58% 60% 40% / 46% 41% 59% 54%;background-image:radial-gradient(var(--blue) 1.25px,transparent 1.25px);background-size:11px 11px;transform:rotate(-8deg)}.halftone-clover::after{content:"";position:absolute;inset:8%;border:1px solid rgba(27,55,140,.18);border-radius:50%;box-shadow:0 0 0 24px rgba(27,55,140,.025),0 0 0 48px rgba(27,55,140,.018);pointer-events:none}
+.scroll-note{margin-top:28px;font:800 13px/1.65 'Courier New',monospace;letter-spacing:.16em;color:#3552a7}
+
+.hero-mark{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:10px;color:var(--blue);font:800 13px/1 'Courier New',monospace;letter-spacing:.18em;text-transform:uppercase}
+.hero-mark .line{width:min(14vw,150px);height:2px;background:var(--blue);opacity:.9}
+
+.hero-clover-art{width:min(32vw,410px);aspect-ratio:1/1;margin:8px auto 18px;position:relative;z-index:2;display:block;filter:drop-shadow(0 18px 24px rgba(35,62,152,.06))}
+.hero-clover-art::before{content:none}
+.hero-clover-art::after{content:'';position:absolute;left:50%;top:49.2%;width:7%;height:7%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 35%,rgba(255,255,255,.92) 0 18%,rgba(255,255,255,0) 19% 100%),radial-gradient(var(--blue) 1.25px,transparent 1.25px);background-size:auto,10px 10px;background-position:center;opacity:.95}
+.hero-clover-art .leaf{position:absolute;width:31%;height:31%;display:block;border-radius:72% 72% 8% 72%;background:
+radial-gradient(circle at 28% 28%,rgba(255,255,255,.85) 0 12%,rgba(255,255,255,0) 13% 100%),
+radial-gradient(var(--blue) 1.32px,transparent 1.32px);
+background-size:auto,10px 10px;background-position:center center;border:1.2px solid rgba(35,62,152,.18);box-shadow:inset 0 0 0 1px rgba(255,255,255,.26)}
+.hero-clover-art .leaf::before{content:'';position:absolute;inset:0;border-radius:inherit;background:linear-gradient(135deg,rgba(35,62,152,.02),rgba(35,62,152,.10));mix-blend-mode:multiply;opacity:.55}
+.hero-clover-art .leaf::after{content:'';position:absolute;left:19%;top:19%;width:18%;height:18%;border-radius:50%;background:rgba(255,255,255,.55);filter:blur(.2px)}
+.hero-clover-art .leaf.top{left:34.5%;top:8%;transform:rotate(-45deg)}
+.hero-clover-art .leaf.right{right:8%;top:34.5%;transform:rotate(45deg)}
+.hero-clover-art .leaf.bottom{left:34.5%;bottom:12%;transform:rotate(135deg)}
+.hero-clover-art .leaf.left{left:8%;top:34.5%;transform:rotate(-135deg)}
+.hero-clover-art .core{position:absolute;left:50%;top:50%;width:8.5%;height:8.5%;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 32% 32%,rgba(255,255,255,.92) 0 10%,rgba(255,255,255,0) 11% 100%),radial-gradient(var(--blue) 1.24px,transparent 1.24px);background-size:auto,9px 9px;opacity:.96}
+.hero-clover-art .stem{position:absolute;left:49.4%;bottom:4%;width:6.5%;height:24%;transform:translateX(-50%) rotate(11deg);border-radius:999px 999px 18px 18px;background:radial-gradient(circle at 30% 20%,rgba(255,255,255,.8) 0 10%,rgba(255,255,255,0) 11% 100%),radial-gradient(var(--blue) 1.2px,transparent 1.2px);background-size:auto,9px 9px;clip-path:path('M 10 0 C 42 6, 67 43, 54 100 C 47 136, 27 178, 8 220 C 25 181, 36 144, 35 104 C 35 65, 24 31, 10 0 Z');opacity:.97}
+.hero-clover-art .sprout{position:absolute;display:block;width:4.8%;height:4.8%;border-radius:50%;background:radial-gradient(var(--blue) 1.15px,transparent 1.15px);background-size:7px 7px;opacity:.28}
+.hero-clover-art .sprout.one{left:20%;top:18%}
+.hero-clover-art .sprout.two{right:19%;top:20%}
+.hero-clover-art .sprout.three{left:24%;bottom:18%}
+@media(max-width:720px){.hero-clover-art{width:min(74vw,360px);margin:6px auto 16px}.hero-clover-art .leaf{background-size:auto,8px 8px}.hero-clover-art .core,.hero-clover-art .stem{background-size:auto,8px 8px}.hero-clover-art .sprout{display:none}}
+
+.archive-kicker{margin-top:2px;color:var(--blue);font:900 clamp(24px,3vw,46px)/1 'Nunito',sans-serif;letter-spacing:.2em;text-transform:uppercase}
+@media(max-width:720px){.hero{min-height:84vh;padding:78px 18px 44px}.hero-inner{width:100%}.hero-mark{gap:10px;font-size:10px;margin-bottom:8px}.hero-mark .line{width:52px;height:1.5px}.halftone-clover{width:58vw;height:38vw;margin:2px auto 0;opacity:.17}.archive-kicker{font-size:clamp(18px,6vw,28px);letter-spacing:.14em;margin-top:4px}.hero-copy h1{font-size:clamp(56px,18vw,94px);line-height:.92}.hero-copy p{font-size:15px;max-width:320px;margin-top:20px}.scroll-note{margin-top:22px;font-size:10px;letter-spacing:.12em}}
+
+.letter-section{padding:76px 24px 110px}
+
+.hero-copy{position:relative;z-index:2;max-width:1040px;display:flex;flex-direction:column;align-items:center}
+.hero-copy .eyebrow{display:none}
+.hero-copy h1{margin:8px 0 0;font-size:clamp(72px,12vw,168px);line-height:.9;letter-spacing:-.075em;color:var(--blue);font-weight:900}
+.hero-copy p{margin:28px auto 0;max-width:730px;font-size:clamp(18px,2.2vw,30px);line-height:1.55;color:#5d72b1;font-weight:700}
+@media(max-width:720px){.hero{min-height:78vh;padding:90px 18px 42px}.hero-copy{max-width:100%}.hero-copy .eyebrow{font-size:11px;margin-bottom:14px}.hero-copy h1{font-size:clamp(58px,21vw,120px);line-height:.86}.hero-copy p{font-size:15px;max-width:300px;margin-top:18px}.halftone-clover{right:-6%;top:16px;width:54vw;height:54vw;opacity:.12}.scroll-note{margin-top:20px;font-size:10px}}
+
+.letter-layout{width:min(980px,100%);margin:0 auto;display:block}
+.letter-title{display:none}
+.letter-title span{font:900 11px/1 "Courier New",monospace;letter-spacing:.22em;color:var(--blue)}
+.letter-title h2{margin:18px 0 22px;font-size:clamp(44px,6vw,82px);line-height:.92;letter-spacing:-.07em;color:var(--blue)}
+.letter-title p{margin:0;color:#6875a0;font-size:14px;line-height:1.8}
+.letter-paper{background:#fff;border:1px solid #dce1ef;padding:56px clamp(28px,5vw,76px);box-shadow:0 22px 60px rgba(26,49,119,.08);position:relative}
+.letter-paper::before{content:"THANK YOU";position:absolute;right:24px;top:23px;font:900 10px/1 "Courier New",monospace;letter-spacing:.26em;color:#a5afd0}
+.letter-paper p{margin:0 0 22px;font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;font-size:18px;line-height:1.9;font-weight:500;letter-spacing:-.015em;color:#172653;word-break:keep-all}
+.signature{margin-top:40px;padding-top:22px;border-top:1px solid #d9deed;display:flex;justify-content:space-between;align-items:end}
+.signature strong{font-size:28px;color:var(--blue)}
+.signature span{font:900 10px/1 "Courier New",monospace;letter-spacing:.2em;color:#8d98bd}
+.catalog{padding:110px 4vw 40px}
+.catalog-intro{max-width:1280px;margin:0 auto 80px;display:flex;align-items:end;justify-content:space-between;gap:40px}
+.catalog-intro h2{margin:0;font-size:clamp(48px,8vw,110px);line-height:.85;letter-spacing:-.075em;color:var(--blue)}
+.catalog-intro p{max-width:450px;margin:0;font:700 12px/1.9 "Courier New",monospace;color:#6d79a3}
+.work-nav{max-width:1280px;margin:0 auto 45px;display:flex;gap:9px;overflow:auto;padding-bottom:10px;scrollbar-width:thin}
+.work-nav a{flex:0 0 auto;padding:9px 12px;border:1px solid #ccd3e8;text-decoration:none;font-size:10px;font-weight:900;color:var(--blue);background:#fff}
+.work-nav a:hover{background:var(--blue);color:white}
+.work-section{max-width:1280px;margin:0 auto;padding:70px 0 95px;border-top:2px solid var(--blue);scroll-margin-top:100px}
+.work-head{display:grid;grid-template-columns:80px minmax(260px,.8fr) 1fr;gap:30px;align-items:start;margin-bottom:48px}
+.work-index{font:1000 48px/.85 Arial,sans-serif;color:var(--blue)}
+.work-title-wrap span{font:900 10px/1 "Courier New",monospace;letter-spacing:.18em;color:var(--accent)}
+.work-title-wrap h2{margin:11px 0 0;font-size:clamp(34px,5vw,67px);line-height:.95;letter-spacing:-.065em;color:var(--blue)}
+.work-head p{justify-self:end;max-width:390px;margin:5px 0 0;font:700 12px/1.8 "Courier New",monospace;color:#67749e}
+.character-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:55px 38px}
+.character-tile{border:0;background:none;padding:0;text-align:left;cursor:pointer;color:inherit;min-width:0}
+.portrait-box{height:310px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#f4f5f9;border:1px solid #e1e5ef;transition:transform .28s ease,box-shadow .28s ease}
+.portrait-box::before{content:"";position:absolute;inset:0;background:radial-gradient(circle,var(--accent) 1px,transparent 1.4px);background-size:7px 7px;opacity:.15;transform:scale(1.3) rotate(8deg)}
+.portrait-box::after{content:"";position:absolute;width:58%;height:75%;border-radius:50% 50% 35% 35%;background:linear-gradient(145deg,var(--accent),#0f245f);opacity:.92;filter:contrast(1.2);clip-path:polygon(32% 0,66% 0,78% 20%,85% 100%,10% 100%,17% 25%)}
+.character-tile:hover .portrait-box{transform:translateY(-8px);box-shadow:0 22px 45px rgba(25,51,132,.15)}
+.portrait-no{position:absolute;left:13px;top:12px;z-index:3;font:1000 12px/1 "Courier New",monospace;color:var(--blue)}
+.portrait-initial{position:relative;z-index:3;font-size:58px;font-weight:1000;letter-spacing:-.08em;color:white;text-shadow:0 3px 0 rgba(0,0,0,.08)}
+.portrait-hint{position:absolute;right:12px;bottom:11px;z-index:3;text-align:right;font:900 9px/1.25 "Courier New",monospace;letter-spacing:.08em;color:var(--blue)}
+.tile-meta{display:block;padding-top:17px}
+.tile-meta strong{display:block;font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:20px;line-height:1.35;font-weight:800;letter-spacing:-.01em;color:#17358d;word-break:keep-all;text-wrap:balance}
+.tile-meta small{display:block;margin-top:7px;font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:13px;line-height:1.45;font-weight:700;letter-spacing:0;color:#65739f;word-break:keep-all}
+.tile-meta em{display:block;margin-top:10px;font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:14px;line-height:1.65;font-weight:500;letter-spacing:-.01em;color:#66749c;font-style:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;white-space:normal}
+.lineup{padding:75px 0 0;border-top:1px solid #dfe4f1;text-align:center;overflow:hidden}
+.lineup h2{margin:0 0 16px;font-size:clamp(42px,8vw,104px);line-height:.9;letter-spacing:-.075em;color:var(--blue)}
+.lineup p{margin:0 0 48px;font:700 12px/1.8 "Courier New",monospace;color:#6b78a3}
+.lineup-strip{width:100%;overflow:hidden;border-top:1px solid #e4e8f3;background:white;padding:22px 0 0}
+.lineup-strip img{display:block;width:max(2048px,100vw);max-width:none;height:auto;margin:0 auto;image-rendering:auto}
+.site-footer{padding:42px 4vw 55px;display:flex;justify-content:space-between;align-items:center;gap:28px;border-top:1px solid #e3e7f1;color:var(--blue);font:900 10px/1.5 "Courier New",monospace;letter-spacing:.12em}
+.footer-meta{display:flex;flex-direction:column;gap:5px}
+.footer-links{margin-left:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.footer-links a{display:inline-flex;align-items:center;justify-content:space-between;min-width:132px;padding:10px 12px;border:1px solid #d8deef;background:#fff;color:var(--blue);text-decoration:none;font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:13px;font-weight:800;line-height:1;letter-spacing:-.01em;box-shadow:4px 4px 0 rgba(27,55,140,.07);transition:transform .18s ease,background .18s ease,color .18s ease}
+.footer-links a:hover{background:var(--blue);color:#fff;transform:translate(-2px,-2px)}
+.footer-links a:focus-visible{outline:3px solid rgba(27,55,140,.22);outline-offset:3px}
+
+/* corner cheers */
+.corner-cheers{position:static;z-index:auto;display:flex;flex-direction:column;gap:8px;margin-left:auto;pointer-events:none;flex:0 0 auto}
+.cheer-buddy{display:flex;align-items:flex-end;gap:10px;filter:drop-shadow(0 10px 18px rgba(26,39,84,.15))}
+.cheer-avatar{width:58px;height:58px;border-radius:18px;overflow:hidden;border:3px solid #fff;background:#f4f6fb;box-shadow:0 8px 20px rgba(27,55,140,.12);flex:0 0 auto}
+.cheer-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.cheer-bubble{position:relative;max-width:150px;padding:10px 12px;border-radius:16px;background:#fff;border:1px solid #d9e0f2;color:var(--blue);font-size:13px;font-weight:900;line-height:1.35;letter-spacing:-.01em;box-shadow:4px 4px 0 rgba(27,55,140,.07)}
+.cheer-bubble::before{content:"";position:absolute;left:-7px;bottom:12px;width:14px;height:14px;background:#fff;border-left:1px solid #d9e0f2;border-bottom:1px solid #d9e0f2;transform:rotate(45deg)}
+.cheer-buddy:nth-child(2){margin-left:18px}
+@media(max-width:720px){.hero-inner{padding-bottom:84px}.corner-cheers{margin-left:0;gap:8px;align-self:flex-start}.cheer-avatar{width:48px;height:48px;border-radius:14px}.cheer-bubble{max-width:118px;padding:8px 10px;font-size:11px}.cheer-buddy{gap:8px}.cheer-buddy:nth-child(2){margin-left:12px}}
+/* end corner cheers */
+
+.modal-title-block{min-width:0}
+.modal-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+.modal-links[hidden]{display:none}
+.work-link{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:9px 13px;border:1.5px solid var(--blue);background:#fff;color:var(--blue);text-decoration:none;border-radius:4px;font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:13px;font-weight:800;line-height:1.25;letter-spacing:-.01em;transition:.18s ease}
+.work-link::after{content:'↗';font-size:14px;line-height:1}
+.work-link:hover{background:var(--blue);color:#fff;transform:translateY(-1px)}
+.work-link:focus-visible{outline:3px solid rgba(27,55,140,.22);outline-offset:2px}
+@media(max-width:720px){.modal-head{padding:18px 18px}.modal-name{font-size:34px}.modal-links{gap:6px;margin-top:12px}.work-link{width:100%;justify-content:space-between;font-size:14px;padding:11px 13px}}
+
+/* Interview modal */
+.modal{position:fixed;inset:0;z-index:100;display:none}
+.modal.open{display:grid;grid-template-columns:minmax(0,1fr) min(760px,92vw)}
+.modal-backdrop{background:rgba(8,19,55,.72);backdrop-filter:blur(4px)}
+.modal-panel{height:100vh;background:#fff;overflow:auto;box-shadow:-30px 0 70px rgba(10,24,67,.24)}
+.modal-head{position:sticky;top:0;z-index:4;background:rgba(255,255,255,.97);border-bottom:2px solid var(--blue);padding:24px 28px;display:flex;justify-content:space-between;align-items:start;gap:20px}
+.modal-kicker{font:900 9px/1 "Courier New",monospace;letter-spacing:.18em;color:#8590b7}
+.modal-name{margin:8px 0 0;font-size:40px;line-height:1.12;letter-spacing:-.04em;color:var(--blue);font-family:'Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-weight:900}
+.modal-close{width:42px;height:42px;border:1px solid #cbd2e7;background:#fff;color:var(--blue);font-size:22px;cursor:pointer}
+.modal-body{padding:24px 34px 78px;font-family:'Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
+.qa-block{padding:28px 0;border-bottom:1px solid #dfe3ef}
+.qa-block:last-child{border-bottom:0}
+.q-head{display:grid;grid-template-columns:48px 1fr;gap:15px;align-items:start;margin-bottom:20px}
+.q-head>span{display:grid;place-items:center;width:42px;height:42px;background:var(--blue);color:#fff;font:1000 11px/1 Arial,sans-serif}
+.q-head h4{margin:4px 0 0;font-size:22px;line-height:1.55;color:#17275b;font-family:'Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-weight:800;letter-spacing:-.02em}
+.answer{padding-left:63px}
+.dialogue{display:grid;grid-template-columns:144px 1fr;gap:16px;margin:12px 0;padding:16px 18px;background:#f5f6fa;border-left:4px solid var(--blue);line-height:1.82;border-radius:6px}
+.dialogue strong{font-size:16px;line-height:1.5;color:var(--blue);font-family:'Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-weight:900;letter-spacing:-.015em}
+.dialogue span{font-size:18px;line-height:1.82;color:#1f2f5a;font-family:'Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-weight:500;letter-spacing:-.015em;word-break:keep-all}
+.dialogue.game{border-left-color:#ff5d88;background:#fff2f6}
+.narration{margin:14px 0 16px;color:#4f5f89;font-family:'Pretendard','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:17px;line-height:1.9;font-style:normal;font-weight:500;letter-spacing:-.012em;word-break:keep-all;background:#f8f9fc;border-left:4px solid #c7d2ef;padding:14px 16px;border-radius:6px}
+/* Background messages */
+.message-layer{position:fixed;inset:0;z-index:15;pointer-events:none;overflow:hidden}
+.float-message{position:absolute;max-width:min(430px,86vw);padding:17px 19px;background:rgba(255,255,255,.97);border:1.5px solid #aebbe0;box-shadow:7px 7px 0 rgba(27,55,140,.13);color:#243f95;font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px;font-weight:600;line-height:1.65;letter-spacing:-.015em;animation:messageLife 7s ease forwards}
+.float-message b{display:block;margin-bottom:7px;color:#112f86;font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:17px;font-weight:900;line-height:1.25;letter-spacing:-.02em;text-shadow:0 0 0 #112f86}
+@keyframes messageLife{0%{opacity:0;transform:translateY(18px) scale(.96)}12%,78%{opacity:.95;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-16px) scale(.98)}}
+body.modal-open{overflow:hidden}
+@media(max-width:1000px){.letter-layout{grid-template-columns:1fr;gap:34px}.letter-title{position:static}.character-grid{grid-template-columns:repeat(3,1fr)}.work-head{grid-template-columns:65px 1fr}.work-head p{grid-column:2;justify-self:start}}
+@media(max-width:720px){.topbar{height:61px;padding:0 15px}.brand{font-size:20px}.nav{display:none}.hero{min-height:620px;padding:42px 18px}.halftone-orb{display:none}.hero h1{display:none}.hero-sub{display:none}.halftone-clover{width:min(88vw,440px);height:min(88vw,440px)}.halftone-clover::before{font-size:min(82vw,410px)}.letter-section{padding:70px 15px 90px}.letter-paper{padding:48px 22px 30px}.letter-paper p{font-size:16px;line-height:1.85}.catalog{padding:80px 15px 30px}.catalog-intro{display:block;margin-bottom:45px}.catalog-intro p{margin-top:25px}.work-section{padding:50px 0 70px}.work-head{grid-template-columns:48px 1fr;gap:15px}.work-index{font-size:35px}.work-head p{grid-column:1/-1}.character-grid{grid-template-columns:repeat(2,1fr);gap:35px 15px}.portrait-box{height:225px}.portrait-initial{font-size:42px}.tile-meta strong{font-size:18px;line-height:1.35}.modal.open{grid-template-columns:1fr}.modal-backdrop{display:none}.modal-panel{width:100vw}.modal-body{padding:18px 18px 56px}.answer{padding-left:0}.dialogue{grid-template-columns:1fr;gap:6px;padding:14px 14px}.lineup-strip img{width:2048px;transform:translateX(calc((100vw - 2048px)/2))}.site-footer{flex-direction:column;align-items:stretch}.footer-links{margin-left:0;align-items:stretch}.footer-links a{width:100%}}
+@media(max-width:720px){.float-message{max-width:88vw;padding:15px 16px;font-size:14px;line-height:1.6}.float-message b{font-size:16px;margin-bottom:6px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+.catalog{position:relative;overflow:hidden;isolation:isolate}
+.catalog > *{position:relative;z-index:2}
+.catalog-bg-layer{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.bg-figure{position:absolute;display:block;opacity:.115;filter:grayscale(1) contrast(1.06);mix-blend-mode:multiply;user-select:none;-webkit-user-drag:none}
+.bg-figure img{display:block;width:100%;height:auto}
+.fig-01{top:3%;left:-4%;width:min(17vw,220px);transform:rotate(-14deg)}
+.fig-02{top:9%;right:-2%;width:min(17vw,220px);transform:rotate(8deg)}
+.fig-03{top:15%;left:7%;width:min(15vw,190px);transform:rotate(-8deg)}
+.fig-04{top:22%;right:5%;width:min(14vw,180px);transform:rotate(10deg)}
+.fig-05{top:30%;left:-2%;width:min(14vw,180px);transform:rotate(-11deg)}
+.fig-06{top:39%;right:-3%;width:min(15vw,190px);transform:rotate(12deg)}
+.fig-07{top:47%;left:5%;width:min(16vw,205px);transform:rotate(-9deg)}
+.fig-08{top:55%;right:4%;width:min(14vw,185px);transform:rotate(9deg)}
+.fig-09{top:61%;left:-1%;width:min(14vw,175px);transform:rotate(-6deg)}
+.fig-10{top:68%;right:-2%;width:min(14vw,185px);transform:rotate(8deg)}
+.fig-11{top:74%;left:7%;width:min(14vw,180px);transform:rotate(-10deg)}
+.fig-12{top:81%;right:6%;width:min(14vw,180px);transform:rotate(10deg)}
+.fig-13{top:87%;left:0%;width:min(13vw,170px);transform:rotate(-8deg)}
+.fig-14{top:90%;right:-1%;width:min(14vw,185px);transform:rotate(7deg)}
+@media (max-width: 1100px){
+  .bg-figure{opacity:.095}
+  .fig-01,.fig-02,.fig-03,.fig-04,.fig-05,.fig-06,.fig-07,.fig-08,.fig-09,.fig-10,.fig-11,.fig-12,.fig-13,.fig-14{width:min(22vw,170px)}
+}
+@media (max-width: 760px){
+  .bg-figure{opacity:.075}
+  .fig-01{top:2%;left:-10%;width:30vw}.fig-02{top:9%;right:-12%;width:30vw}.fig-03{top:18%;left:-8%;width:26vw}.fig-04{top:26%;right:-7%;width:24vw}
+  .fig-05{top:34%;left:-8%;width:24vw}.fig-06{top:43%;right:-8%;width:24vw}.fig-07{top:52%;left:-8%;width:25vw}.fig-08{top:60%;right:-10%;width:23vw}
+  .fig-09{top:67%;left:-7%;width:22vw}.fig-10{top:74%;right:-8%;width:24vw}.fig-11{top:80%;left:-8%;width:25vw}.fig-12{top:86%;right:-7%;width:23vw}
+  .fig-13,.fig-14{display:none}
+}
+
+
+.hero-cast-wall{width:min(1360px,100%);margin:38px auto 0;display:flex;flex-direction:column;gap:14px;position:relative;z-index:2}
+.hero-cast-wall::before,.hero-cast-wall::after{content:"";position:absolute;top:0;bottom:0;width:7%;z-index:3;pointer-events:none}
+.hero-cast-wall::before{left:0;background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,0) 100%)}
+.hero-cast-wall::after{right:0;background:linear-gradient(270deg,#fff 0%,rgba(255,255,255,0) 100%)}
+.cast-row{overflow:hidden;padding:6px 0}
+.cast-track{display:flex;gap:16px;width:max-content;animation:cast-scroll 52s linear infinite}
+.cast-row.reverse .cast-track{animation-direction:reverse;animation-duration:60s}
+.cast-card{width:178px;aspect-ratio:1/1;border-radius:28px;overflow:hidden;background:#fff;border:1px solid rgba(27,55,140,.12);box-shadow:0 14px 34px rgba(27,55,140,.09),0 2px 0 rgba(27,55,140,.04);flex:none;position:relative;transform:translateY(0);transition:transform .28s ease,box-shadow .28s ease}
+.cast-card:nth-child(odd){margin-top:18px}
+.cast-card:nth-child(even){margin-bottom:12px}
+.cast-card img{width:100%;height:100%;display:block;object-fit:cover}
+.cast-card::after{content:"";position:absolute;inset:auto 0 0;height:42%;background:linear-gradient(180deg,rgba(21,34,78,0) 0%,rgba(21,34,78,.12) 100%)}
+.cast-card:hover{transform:translateY(-6px);box-shadow:0 20px 44px rgba(27,55,140,.15),0 2px 0 rgba(27,55,140,.06)}
+@keyframes cast-scroll{from{transform:translateX(0)}to{transform:translateX(calc(-50% - 8px))}}
+@media (max-width: 900px){.hero-cast-wall{margin-top:28px;gap:10px}.cast-track{gap:12px}.cast-card{width:140px;border-radius:22px}.cast-card:nth-child(odd){margin-top:10px}.cast-card:nth-child(even){margin-bottom:8px}}
+@media (max-width: 640px){.hero{padding-top:44px}.hero-cast-wall{margin-top:22px}.cast-card{width:116px;border-radius:18px}.scroll-note{font-size:11px;letter-spacing:.12em}}
+
+
+.portrait-box.has-photo{background:#eef1f7}
+.portrait-box.has-photo::after{display:none}
+.portrait-box.has-photo::before{opacity:.08;transform:none;background:radial-gradient(circle at 1px 1px,var(--accent) 1px,transparent 1.6px);background-size:10px 10px}
+.portrait-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.portrait-box.has-photo .portrait-no{padding:2px 6px;border-radius:999px;background:rgba(255,255,255,.88);backdrop-filter:blur(6px);box-shadow:0 3px 10px rgba(23,53,141,.12)}
+.portrait-box.has-photo .portrait-initial,.portrait-box.has-photo .portrait-hint{display:none}
+
+</style>
+</head>
+<body>
+<canvas id="celebration"></canvas>
+<div class="message-layer" id="messageLayer"></div>
+<header class="topbar">
+<a class="brand" href="#top">PURUKA</a>
+<nav class="nav"><a href="#letter">LETTER</a><a href="#works">WORKS</a><a href="#thanks">THANKS</a></nav>
+<div class="header-side"><span>OFFICIAL</span><span>CREATOR</span></div>
+</header>
+<main id="top">
+<section class="hero">
+<div class="hero-inner">
+<div class="hero-mark"><span class="line"></span><span>2026 OFFICIAL CREATOR</span><span class="line"></span></div>
+<div aria-hidden="true" class="hero-clover-art"><span class="sprout one"></span><span class="sprout two"></span><span class="sprout three"></span><span class="leaf top"></span><span class="leaf left"></span><span class="leaf right"></span><span class="leaf bottom"></span><span class="core"></span><span class="stem"></span></div>
+<div class="hero-copy">
+<div class="archive-kicker">THANK YOU ARCHIVE</div>
+<h1>안녕하세요,<br/>푸루카입니다.</h1>
+<p>공식 크리에이터가 되기까지 함께해주신 모든 분께 전하는 감사 인사입니다.</p>
+<div class="scroll-note">SCROLL DOWN FOR LETTER · WORKS · INTERVIEWS</div>
+</div>
+<div aria-label="메인 캐릭터 포토 라인업" class="hero-cast-wall">
+<div class="cast-row">
+<div class="cast-track"><figure class="cast-card"><img alt="main cover 1" src="assets/image-001-a7cfbc3eb161.png"/></figure><figure class="cast-card"><img alt="main cover 2" src="assets/image-002-0248ebcbc767.png"/></figure><figure class="cast-card"><img alt="main cover 3" src="assets/image-003-02457cadb605.png"/></figure><figure class="cast-card"><img alt="main cover 4" src="assets/image-004-5d87f9098755.png"/></figure><figure class="cast-card"><img alt="main cover 5" src="assets/image-005-c337a367bb5e.png"/></figure><figure class="cast-card"><img alt="main cover 6" src="assets/image-006-b67fc257640d.png"/></figure><figure class="cast-card"><img alt="main cover 7" src="assets/image-007-1e0b5a8445f3.png"/></figure><figure class="cast-card"><img alt="main cover 8" src="assets/image-008-ac4add549f99.png"/></figure><figure class="cast-card"><img alt="main cover 9" src="assets/image-009-7aef754de191.png"/></figure><figure class="cast-card"><img alt="main cover 1" src="assets/image-001-a7cfbc3eb161.png"/></figure><figure class="cast-card"><img alt="main cover 2" src="assets/image-002-0248ebcbc767.png"/></figure><figure class="cast-card"><img alt="main cover 3" src="assets/image-003-02457cadb605.png"/></figure><figure class="cast-card"><img alt="main cover 4" src="assets/image-004-5d87f9098755.png"/></figure><figure class="cast-card"><img alt="main cover 5" src="assets/image-005-c337a367bb5e.png"/></figure><figure class="cast-card"><img alt="main cover 6" src="assets/image-006-b67fc257640d.png"/></figure><figure class="cast-card"><img alt="main cover 7" src="assets/image-007-1e0b5a8445f3.png"/></figure><figure class="cast-card"><img alt="main cover 8" src="assets/image-008-ac4add549f99.png"/></figure><figure class="cast-card"><img alt="main cover 9" src="assets/image-009-7aef754de191.png"/></figure></div>
+</div>
+<div class="cast-row reverse">
+<div class="cast-track"><figure class="cast-card"><img alt="main cover 10" src="assets/image-010-96f14f092424.png"/></figure><figure class="cast-card"><img alt="main cover 11" src="assets/image-011-57fe8b46aefb.png"/></figure><figure class="cast-card"><img alt="main cover 12" src="assets/image-012-5c69f5af38b1.png"/></figure><figure class="cast-card"><img alt="main cover 13" src="assets/image-013-1fcc2e16d7a7.png"/></figure><figure class="cast-card"><img alt="main cover 14" src="assets/image-014-bd3dd7f4f4f0.png"/></figure><figure class="cast-card"><img alt="main cover 15" src="assets/image-015-496bac16edba.png"/></figure><figure class="cast-card"><img alt="main cover 16" src="assets/image-016-2b8790f39ebc.png"/></figure><figure class="cast-card"><img alt="main cover 17" src="assets/image-017-bb2ae16f80dd.png"/></figure><figure class="cast-card"><img alt="main cover 18" src="assets/image-018-413409ba0592.png"/></figure><figure class="cast-card"><img alt="main cover 10" src="assets/image-010-96f14f092424.png"/></figure><figure class="cast-card"><img alt="main cover 11" src="assets/image-011-57fe8b46aefb.png"/></figure><figure class="cast-card"><img alt="main cover 12" src="assets/image-012-5c69f5af38b1.png"/></figure><figure class="cast-card"><img alt="main cover 13" src="assets/image-013-1fcc2e16d7a7.png"/></figure><figure class="cast-card"><img alt="main cover 14" src="assets/image-014-bd3dd7f4f4f0.png"/></figure><figure class="cast-card"><img alt="main cover 15" src="assets/image-015-496bac16edba.png"/></figure><figure class="cast-card"><img alt="main cover 16" src="assets/image-016-2b8790f39ebc.png"/></figure><figure class="cast-card"><img alt="main cover 17" src="assets/image-017-bb2ae16f80dd.png"/></figure><figure class="cast-card"><img alt="main cover 18" src="assets/image-018-413409ba0592.png"/></figure></div>
+</div>
+</div>
+</div>
+</section>
+<section class="letter-section" id="letter">
+<div class="letter-layout">
+<article class="letter-paper"><p>이렇게 인사드리게 되어 정말 기쁩니다.</p><p>처음에는 광고를 통해 크랙을 접하고, 직접 플레이를 하다가 문득 “와, 나도 만들어보고 싶다”는 생각으로 시작하게 되었습니다.</p><p>혼자 이것저것 만져보기도 하고, 우연히 문을 박차고 들어가 “도와주세요!” 하며 도움을 받기도 하면서 한 작품, 두 작품이 만들어질 때마다 심장이 두근거렸습니다.</p><p>혼자 설레발을 치기도 했고, 가끔은 울적해지기도 했지만, 그래도 계속 다듬고 또 다듬다 보니 송도식이라는 캐릭터를 통해 많은 분들과 만나게 되었습니다.</p><p>어찌 보면 첫 작품보다 송도식이라는 캐릭터 덕분에 빛을 보게 된 것 같지만, 그래도 제가 만든 아이들이니 모두 똑같이 아끼고 사랑합니다. 하하.</p><p>솔직히 고민도 많았습니다.</p><p>매번 비슷한 패턴의 이야기를 만들기보다는, 저 스스로도 “와, 이거 진짜 재밌었다”라고 느낄 수 있는 스토리를 만들고 싶었거든요.</p><p>만들다 보니 조금씩 제 길을 찾아가고 있는 것 같습니다.</p><p>저는 숨겨진 내용, 여운이 남는 전개, 슬픈 엔딩 같은 요소를 정말 좋아합니다. 물론 난발하진 않겠지만요.</p><p>여러분이 제 이야기를 플레이하시다가 슬퍼해주실 때, 저는 솔직히 조금 짜릿합니다. 장난입니다. ㅎㅎ</p><p>그만큼 제가 만든 이야기가 여러분의 기억에 오래 남았으면 좋겠습니다.</p><p>공식 크리에이터가 되기까지 제 작품을 함께 플레이해주시고, 문제점을 찾아주시고, 따뜻하게 응원해주신 모든 분들께 진심으로 감사드립니다.</p><p>재미 삼아 아이들 인터뷰도 준비해보았습니다. 편하게 둘러봐주세요!</p><p>공식 크리에이터 푸루카, 이만 인사 마치겠습니다.</p><p>감사합니다.</p><div class="signature"><strong>푸루카 드림</strong><span>모든 스챗 캐릭터를 대표해서 인사드립니다.</span></div></article>
+</div>
+
+</section>
+
+<section class="catalog" id="works"><div aria-hidden="true" class="catalog-bg-layer"><span class="bg-figure fig-01"><img alt="" src="assets/image-019-68718ade9b8d.png"/></span><span class="bg-figure fig-02"><img alt="" src="assets/image-020-42a4e6796e09.png"/></span><span class="bg-figure fig-03"><img alt="" src="assets/image-021-18911be145bb.png"/></span><span class="bg-figure fig-04"><img alt="" src="assets/image-022-e9fc56783f54.png"/></span><span class="bg-figure fig-05"><img alt="" src="assets/image-023-579b97915184.png"/></span><span class="bg-figure fig-06"><img alt="" src="assets/image-024-64e8433f3289.png"/></span><span class="bg-figure fig-07"><img alt="" src="assets/image-025-e6e4c14bbf94.png"/></span><span class="bg-figure fig-08"><img alt="" src="assets/image-026-a52a397f3886.png"/></span><span class="bg-figure fig-09"><img alt="" src="assets/image-027-2e2ade68176c.png"/></span><span class="bg-figure fig-10"><img alt="" src="assets/image-028-d9ed310c563a.png"/></span><span class="bg-figure fig-11"><img alt="" src="assets/image-029-3b9eae95c57d.png"/></span><span class="bg-figure fig-12"><img alt="" src="assets/image-029-3b9eae95c57d.png"/></span><span class="bg-figure fig-13"><img alt="" src="assets/image-030-d9d98d8aaa0d.png"/></span><span class="bg-figure fig-14"><img alt="" src="assets/image-031-ea594a294f81.png"/></span></div>
+<div class="catalog-intro"><h2>Works &amp;<br/>Interviews</h2></div>
+<nav class="work-nav"><a href="#work-01">비공개 기록</a><a href="#work-02">빵셔틀의 복수</a><a href="#work-03">송진파</a><a href="#work-04">너를 좋아한다고 말하지 못한 계절</a><a href="#work-05">결함된 녀석들</a><a href="#work-06">달토끼 프로젝트</a><a href="#work-07">네 취향이 되고 싶었어</a><a href="#work-08">칼날 끝의 나비</a><a href="#work-09">MOM를 찾아서</a><a href="#work-10">산제물은 반품되지 않습니다</a></nav>
+<section class="work-section" id="work-01" style="--accent:#16358f">
+<header class="work-head">
+<div class="work-index">01</div>
+<div class="work-title-wrap">
+<span>PRIVATE ARCHIVE</span>
+<h2>비공개 기록</h2>
+</div>
+<p>시작을 만든 두 사람</p>
+</header>
+<div class="character-grid">
+<button aria-label="서한결 인터뷰 열기" class="character-tile" data-character="서한결" data-template="tpl-char-01" data-work="비공개 기록" type="button">
+<span class="portrait-box has-photo" style="--accent:#16358f">
+<img alt="portrait 01" class="portrait-photo" src="assets/image-032-660be068530f.jpg"/>
+<span class="portrait-no">01</span>
+<span class="portrait-initial">서</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>서한결</strong>
+<small>비공개 기록</small>
+<em>“…축하해.”</em>
+</span>
+</button>
+<button aria-label="알렉세이 모로조프 인터뷰 열기" class="character-tile" data-character="알렉세이 모로조프" data-template="tpl-char-02" data-work="비공개 기록" type="button">
+<span class="portrait-box has-photo" style="--accent:#16358f">
+<img alt="portrait 02" class="portrait-photo" src="assets/image-033-63683ebc9060.jpg"/>
+<span class="portrait-no">02</span>
+<span class="portrait-initial">알모</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>알렉세이 모로조프</strong>
+<small>비공개 기록</small>
+<em>“장기간의 반복 작업과 수정이 공식적인 결과로 환산된 것뿐이다.”</em>
+</span>
+</button></div>
+</section>
+<section class="work-section" id="work-02" style="--accent:#2c52b6">
+<header class="work-head">
+<div class="work-index">02</div>
+<div class="work-title-wrap">
+<span>REVENGE FILE</span>
+<h2>빵셔틀의 복수</h2>
+</div>
+<p>복수와 혐오가 서로를 붙드는 이야기</p>
+</header>
+<div class="character-grid">
+<button aria-label="우강민 인터뷰 열기" class="character-tile" data-character="우강민" data-template="tpl-char-03" data-work="빵셔틀의 복수" type="button">
+<span class="portrait-box has-photo" style="--accent:#2c52b6">
+<img alt="portrait 03" class="portrait-photo" src="assets/image-034-9e29080648d3.jpg"/>
+<span class="portrait-no">03</span>
+<span class="portrait-initial">우</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>우강민</strong>
+<small>빵셔틀의 복수</small>
+<em>“정식? 이제야?”</em>
+</span>
+</button></div>
+</section>
+<section class="work-section" id="work-03" style="--accent:#17377b">
+<header class="work-head">
+<div class="work-index">03</div>
+<div class="work-title-wrap">
+<span>SONGJIN</span>
+<h2>송진파</h2>
+</div>
+<p>현실의 조직과 게임 속 뉴비가 교차하는 세계</p>
+</header>
+<div class="character-grid">
+<button aria-label="송도식 인터뷰 열기" class="character-tile" data-character="송도식" data-template="tpl-char-04" data-work="송진파" type="button">
+<span class="portrait-box has-photo" style="--accent:#17377b">
+<img alt="portrait 04" class="portrait-photo" src="assets/image-035-9a9d9653afab.jpg"/>
+<span class="portrait-no">04</span>
+<span class="portrait-initial">송</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>송도식</strong>
+<small>송진파</small>
+<em>“정식 크리에이터 됐다꼬?”</em>
+</span>
+</button>
+<button aria-label="선우영 인터뷰 열기" class="character-tile" data-character="선우영" data-template="tpl-char-05" data-work="송진파" type="button">
+<span class="portrait-box has-photo" style="--accent:#17377b">
+<img alt="portrait 05" class="portrait-photo" src="assets/image-036-b5d3046dd8a3.jpg"/>
+<span class="portrait-no">05</span>
+<span class="portrait-initial">선</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>선우영</strong>
+<small>송진파</small>
+<em>“이야, 우리 제작자님이 이제 공식적으로 인정까지 받으셨네.”</em>
+</span>
+</button>
+<button aria-label="궉진 인터뷰 열기" class="character-tile" data-character="궉진" data-template="tpl-char-06" data-work="송진파" type="button">
+<span class="portrait-box has-photo" style="--accent:#17377b">
+<img alt="portrait 06" class="portrait-photo" src="assets/image-037-66dba6535416.jpg"/>
+<span class="portrait-no">06</span>
+<span class="portrait-initial">궉</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>궉진</strong>
+<small>송진파</small>
+<em>“축하해.”</em>
+</span>
+</button>
+<button aria-label="최홍우 인터뷰 열기" class="character-tile" data-character="최홍우" data-template="tpl-char-07" data-work="송진파" type="button">
+<span class="portrait-box has-photo" style="--accent:#17377b">
+<img alt="portrait 07" class="portrait-photo" src="assets/image-038-5941d5499b4c.jpg"/>
+<span class="portrait-no">07</span>
+<span class="portrait-initial">최</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>최홍우</strong>
+<small>송진파</small>
+<em>“저, 정말 축하드려요!”</em>
+</span>
+</button></div>
+</section>
+<section class="work-section" id="work-04" style="--accent:#395cc4">
+<header class="work-head">
+<div class="work-index">04</div>
+<div class="work-title-wrap">
+<span>YOUTH SEASON</span>
+<h2>너를 좋아한다고 말하지 못한 계절</h2>
+</div>
+<p>끝내 말하지 못한 마음과 늦은 청춘</p>
+</header>
+<div class="character-grid">
+<button aria-label="강태윤 인터뷰 열기" class="character-tile" data-character="강태윤" data-template="tpl-char-08" data-work="너를 좋아한다고 말하지 못한 계절" type="button">
+<span class="portrait-box has-photo" style="--accent:#395cc4">
+<img alt="portrait 08" class="portrait-photo" src="assets/image-039-e99ce509b4dc.jpg"/>
+<span class="portrait-no">08</span>
+<span class="portrait-initial">강</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>강태윤</strong>
+<small>너를 좋아한다고 말하지 못한 계절</small>
+<em>“오, 누나 이제 정식이야?”</em>
+</span>
+</button>
+<button aria-label="한우강 인터뷰 열기" class="character-tile" data-character="한우강" data-template="tpl-char-09" data-work="너를 좋아한다고 말하지 못한 계절" type="button">
+<span class="portrait-box has-photo" style="--accent:#395cc4">
+<img alt="portrait 09" class="portrait-photo" src="assets/image-040-eaef06dbb514.jpg"/>
+<span class="portrait-no">09</span>
+<span class="portrait-initial">한</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>한우강</strong>
+<small>너를 좋아한다고 말하지 못한 계절</small>
+<em>“축하해.”</em>
+</span>
+</button></div>
+</section>
+<section class="work-section" id="work-05" style="--accent:#1b3270">
+<header class="work-head">
+<div class="work-index">05</div>
+<div class="work-title-wrap">
+<span>DEFECTIVE</span>
+<h2>결함된 녀석들</h2>
+</div>
+<p>사랑이라는 이름 아래 드러나는 결함</p>
+</header>
+<div class="character-grid">
+<button aria-label="앤조 드 발몽 인터뷰 열기" class="character-tile" data-character="앤조 드 발몽" data-template="tpl-char-10" data-work="결함된 녀석들" type="button">
+<span class="portrait-box has-photo" style="--accent:#1b3270">
+<img alt="portrait 10" class="portrait-photo" src="assets/image-041-e643ab4ed4a5.jpg"/>
+<span class="portrait-no">10</span>
+<span class="portrait-initial">앤드발</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>앤조 드 발몽</strong>
+<small>결함된 녀석들</small>
+<em>“축하할 일이군.”</em>
+</span>
+</button>
+<button aria-label="강채현 인터뷰 열기" class="character-tile" data-character="강채현" data-template="tpl-char-11" data-work="결함된 녀석들" type="button">
+<span class="portrait-box has-photo" style="--accent:#1b3270">
+<img alt="portrait 11" class="portrait-photo" src="assets/image-042-38af0235503d.jpg"/>
+<span class="portrait-no">11</span>
+<span class="portrait-initial">강</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>강채현</strong>
+<small>결함된 녀석들</small>
+<em>“축하해.”</em>
+</span>
+</button>
+<button aria-label="도우석 인터뷰 열기" class="character-tile" data-character="도우석" data-template="tpl-char-12" data-work="결함된 녀석들" type="button">
+<span class="portrait-box has-photo" style="--accent:#1b3270">
+<img alt="portrait 12" class="portrait-photo" src="assets/image-043-151d9326a21a.jpg"/>
+<span class="portrait-no">12</span>
+<span class="portrait-initial">도</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>도우석</strong>
+<small>결함된 녀석들</small>
+<em>“정말 축하해.”</em>
+</span>
+</button></div>
+</section>
+<section class="work-section" id="work-06" style="--accent:#4d65be">
+<header class="work-head">
+<div class="work-index">06</div>
+<div class="work-title-wrap">
+<span>MOON RABBIT</span>
+<h2>달토끼 프로젝트</h2>
+</div>
+<p>창조와 책임, 기다림에 관한 기록</p>
+</header>
+<div class="character-grid">
+<button aria-label="0호 인터뷰 열기" class="character-tile" data-character="0호" data-template="tpl-char-13" data-work="달토끼 프로젝트" type="button">
+<span class="portrait-box has-photo" style="--accent:#4d65be">
+<img alt="portrait 13" class="portrait-photo" src="assets/image-044-3eefdd4696e8.jpg"/>
+<span class="portrait-no">13</span>
+<span class="portrait-initial">0</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>0호</strong>
+<small>달토끼 프로젝트</small>
+<em>“마침내 이름을 얻으셨군요, 마스터.”</em>
+</span>
+</button>
+<button aria-label="1호 인터뷰 열기" class="character-tile" data-character="1호" data-template="tpl-char-14" data-work="달토끼 프로젝트" type="button">
+<span class="portrait-box has-photo" style="--accent:#4d65be">
+<img alt="portrait 14" class="portrait-photo" src="assets/image-045-cb8304241a80.jpg"/>
+<span class="portrait-no">14</span>
+<span class="portrait-initial">1</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>1호</strong>
+<small>달토끼 프로젝트</small>
+<em>“진짜? 진짜 정식 크리에이터가 된 거야? 우와, 마스터 최고!”</em>
+</span>
+</button>
+<button aria-label="2호 인터뷰 열기" class="character-tile" data-character="2호" data-template="tpl-char-15" data-work="달토끼 프로젝트" type="button">
+<span class="portrait-box has-photo" style="--accent:#4d65be">
+<img alt="portrait 15" class="portrait-photo" src="assets/image-046-5eeea93f11b7.jpg"/>
+<span class="portrait-no">15</span>
+<span class="portrait-initial">2</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>2호</strong>
+<small>달토끼 프로젝트</small>
+<em>“그래서.”</em>
+</span>
+</button>
+<button aria-label="3호 인터뷰 열기" class="character-tile" data-character="3호" data-template="tpl-char-16" data-work="달토끼 프로젝트" type="button">
+<span class="portrait-box has-photo" style="--accent:#4d65be">
+<img alt="portrait 16" class="portrait-photo" src="assets/image-047-d5e231b008d0.jpg"/>
+<span class="portrait-no">16</span>
+<span class="portrait-initial">3</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>3호</strong>
+<small>달토끼 프로젝트</small>
+<em>“오랫동안 노력한 결과를 인정받으셨다니 기쁩니다.”</em>
+</span>
+</button>
+<button aria-label="4호 인터뷰 열기" class="character-tile" data-character="4호" data-template="tpl-char-17" data-work="달토끼 프로젝트" type="button">
+<span class="portrait-box has-photo" style="--accent:#4d65be">
+<img alt="portrait 17" class="portrait-photo" src="assets/image-048-3f6eaa922333.jpg"/>
+<span class="portrait-no">17</span>
+<span class="portrait-initial">4</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>4호</strong>
+<small>달토끼 프로젝트</small>
+<em>“당연한 결과입니다. 마스터는 저를 완성한 분이니까요.”</em>
+</span>
+</button>
+<button aria-label="5호 인터뷰 열기" class="character-tile" data-character="5호" data-template="tpl-char-18" data-work="달토끼 프로젝트" type="button">
+<span class="portrait-box has-photo" style="--accent:#4d65be">
+<img alt="portrait 18" class="portrait-photo" src="assets/image-049-b7e4fb0421e4.jpg"/>
+<span class="portrait-no">18</span>
+<span class="portrait-initial">5</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>5호</strong>
+<small>달토끼 프로젝트</small>
+<em>“마스터가 정식 크리에이터가 됐어?”</em>
+</span>
+</button>
+<button aria-label="강단 인터뷰 열기" class="character-tile" data-character="강단" data-template="tpl-char-19" data-work="달토끼 프로젝트" type="button">
+<span class="portrait-box has-photo" style="--accent:#4d65be">
+<img alt="" class="portrait-photo" src="assets/image-050-562defd7297a.jpg"/>
+<span class="portrait-no">19</span>
+<span class="portrait-initial">강</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>강단</strong>
+<small>달토끼 프로젝트</small>
+<em>“축하드립니다.”</em>
+</span>
+</button>
+<button aria-label="웨이웬 인터뷰 열기" class="character-tile" data-character="웨이웬" data-template="tpl-char-20" data-work="달토끼 프로젝트" type="button">
+<span class="portrait-box has-photo" style="--accent:#4d65be">
+<img alt="" class="portrait-photo" src="assets/image-051-2ffdc9433e92.jpg"/>
+<span class="portrait-no">20</span>
+<span class="portrait-initial">웨</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>웨이웬</strong>
+<small>달토끼 프로젝트</small>
+<em>“축하하지.”</em>
+</span>
+</button>
+<button aria-label="제이슨 인터뷰 열기" class="character-tile" data-character="제이슨" data-template="tpl-char-21" data-work="달토끼 프로젝트" type="button">
+<span class="portrait-box has-photo" style="--accent:#4d65be">
+<img alt="" class="portrait-photo" src="assets/image-052-bf472e7fc355.jpg"/>
+<span class="portrait-no">21</span>
+<span class="portrait-initial">제</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>제이슨</strong>
+<small>달토끼 프로젝트</small>
+<em>“마침내 공식 명함이 생겼군.”</em>
+</span>
+</button></div>
+</section>
+<section class="work-section" id="work-07" style="--accent:#2349a0">
+<header class="work-head">
+<div class="work-index">07</div>
+<div class="work-title-wrap">
+<span>BAD BOY</span>
+<h2>네 취향이 되고 싶었어</h2>
+</div>
+<p>소꿉친구가 잘못 이해한 위험한 취향</p>
+</header>
+<div class="character-grid">
+<button aria-label="성재 인터뷰 열기" class="character-tile" data-character="성재" data-template="tpl-char-22" data-work="네 취향이 되고 싶었어" type="button">
+<span class="portrait-box has-photo" style="--accent:#2349a0">
+<img alt="" class="portrait-photo" src="assets/image-053-609067827faa.jpg"/>
+<span class="portrait-no">22</span>
+<span class="portrait-initial">성</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>성재</strong>
+<small>네 취향이 되고 싶었어</small>
+<em>“……될 줄 알았어.”</em>
+</span>
+</button></div>
+</section>
+<section class="work-section" id="work-08" style="--accent:#0f2c7a">
+<header class="work-head">
+<div class="work-index">08</div>
+<div class="work-title-wrap">
+<span>BLADE &amp; BUTTERFLY</span>
+<h2>칼날 끝의 나비</h2>
+</div>
+<p>칼날이 맞부딪치는 전국시대의 여정</p>
+</header>
+<div class="character-grid">
+<button aria-label="아야노코지 타카츠구 인터뷰 열기" class="character-tile" data-character="아야노코지 타카츠구" data-template="tpl-char-23" data-work="칼날 끝의 나비" type="button">
+<span class="portrait-box has-photo" style="--accent:#0f2c7a">
+<img alt="" class="portrait-photo" src="assets/image-054-9944da14c626.jpg"/>
+<span class="portrait-no">23</span>
+<span class="portrait-initial">아타</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>아야노코지 타카츠구</strong>
+<small>칼날 끝의 나비</small>
+<em>“마땅한 결과라 생각합니다. 오랜 시간 공들인 사람이 그에 걸맞은 이름을 얻었을 뿐이지요.”</em>
+</span>
+</button>
+<button aria-label="하치마루 인터뷰 열기" class="character-tile" data-character="하치마루" data-template="tpl-char-24" data-work="칼날 끝의 나비" type="button">
+<span class="portrait-box has-photo" style="--accent:#0f2c7a">
+<img alt="" class="portrait-photo" src="assets/image-055-70f01611095b.jpg"/>
+<span class="portrait-no">24</span>
+<span class="portrait-initial">하</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>하치마루</strong>
+<small>칼날 끝의 나비</small>
+<em>“정식? 전에는 가짜였어?”</em>
+</span>
+</button></div>
+</section>
+<section class="work-section" id="work-09" style="--accent:#3566c4">
+<header class="work-head">
+<div class="work-index">09</div>
+<div class="work-title-wrap">
+<span>ROAD MOVIE</span>
+<h2>MOM를 찾아서</h2>
+</div>
+<p>뜨거운 사막 위에서 시작된 마지막 여행</p>
+</header>
+<div class="character-grid">
+<button aria-label="마티 인터뷰 열기" class="character-tile" data-character="마티" data-template="tpl-char-25" data-work="MOM를 찾아서" type="button">
+<span class="portrait-box has-photo" style="--accent:#3566c4">
+<img alt="" class="portrait-photo" src="assets/image-056-25171ac15e82.jpg"/>
+<span class="portrait-no">25</span>
+<span class="portrait-initial">마</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>마티</strong>
+<small>MOM를 찾아서</small>
+<em>“정식 크리에이터라……이거 꽤 대단한 일이잖아?”</em>
+</span>
+</button></div>
+</section>
+<section class="work-section" id="work-10" style="--accent:#253a91">
+<header class="work-head">
+<div class="work-index">10</div>
+<div class="work-title-wrap">
+<span>ONI TRIPLETS</span>
+<h2>산제물은 반품되지 않습니다</h2>
+</div>
+<p>서로 다른 방식으로 망가진 오니 삼형제</p>
+</header>
+<div class="character-grid">
+<button aria-label="가쿠 인터뷰 열기" class="character-tile" data-character="가쿠" data-template="tpl-char-26" data-work="산제물은 반품되지 않습니다" type="button">
+<span class="portrait-box has-photo" style="--accent:#253a91">
+<img alt="" class="portrait-photo" src="assets/image-057-687ddd65eff5.jpg"/>
+<span class="portrait-no">26</span>
+<span class="portrait-initial">가</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>가쿠</strong>
+<small>산제물은 반품되지 않습니다</small>
+<em>“시끄러워. 축하받을 사람은 따로 있는데 왜 나까지 불러낸 거야.”</em>
+</span>
+</button>
+<button aria-label="나기 인터뷰 열기" class="character-tile" data-character="나기" data-template="tpl-char-27" data-work="산제물은 반품되지 않습니다" type="button">
+<span class="portrait-box has-photo" style="--accent:#253a91">
+<img alt="" class="portrait-photo" src="assets/image-058-05491f307b48.jpg"/>
+<span class="portrait-no">27</span>
+<span class="portrait-initial">나</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>나기</strong>
+<small>산제물은 반품되지 않습니다</small>
+<em>“정말 정식이 된 거야? 이제 없어지지 않는 거지?”</em>
+</span>
+</button>
+<button aria-label="쿤 인터뷰 열기" class="character-tile" data-character="쿤" data-template="tpl-char-28" data-work="산제물은 반품되지 않습니다" type="button">
+<span class="portrait-box has-photo" style="--accent:#253a91">
+<img alt="" class="portrait-photo" src="assets/image-059-eaba620f62b1.jpg"/>
+<span class="portrait-no">28</span>
+<span class="portrait-initial">쿤</span>
+<span class="portrait-hint">PORTRAIT<br/>READY</span>
+</span>
+<span class="tile-meta">
+<strong>쿤</strong>
+<small>산제물은 반품되지 않습니다</small>
+<em>“와, 잘됐다! 역시 잘할 줄 알았어.”</em>
+</span>
+</button></div>
+</section>
+</section>
+<section class="lineup" id="thanks">
+<h2>Thank You.</h2>
+<p>MADE BY PURUKA · COMPLETED BY EVERYONE WHO STAYED</p>
+<div class="lineup-strip"><img alt="푸루카 캐릭터 라인업" src="assets/image-060-4ba9bf43ceb5.png"/></div>
+</section>
+</main>
+
+
+<footer class="site-footer">
+  <div class="footer-meta">
+    <span>PURUKA · OFFICIAL CREATOR ARCHIVE</span>
+    <span>THANK YOU FOR PLAYING · 2026</span>
+  </div>
+  <aside class="corner-cheers" aria-hidden="true">
+  <div class="cheer-buddy">
+    <span class="cheer-avatar"><img src="assets/image-061-9e58ea49e38e.jpg" alt=""></span>
+    <span class="cheer-bubble">축하해!</span>
+  </div>
+  <div class="cheer-buddy">
+    <span class="cheer-avatar"><img src="assets/image-062-b5131765d51e.jpg" alt=""></span>
+    <span class="cheer-bubble">언젠가<br>만나러올게</span>
+  </div>
+</aside>
+  <div class="footer-links" aria-label="푸루카 외부 링크">
+    <a href="https://open.kakao.com/o/sx8xEVDi" target="_blank" rel="noopener noreferrer">문의 <span>| ▼</span></a>
+    <a href="https://www.notion.so/3bea1ee825d483bfa327017f9ea87c9e?source=copy_link" target="_blank" rel="noopener noreferrer">노션 <span>| ▼</span></a>
+  </div>
+</footer>
+<div aria-hidden="true" aria-modal="true" class="modal" id="interviewModal" role="dialog">
+<div class="modal-backdrop" data-close=""></div>
+<section class="modal-panel">
+<header class="modal-head"><div class="modal-title-block"><div class="modal-kicker" id="modalWork"></div><h2 class="modal-name" id="modalName"></h2><div class="modal-links" hidden="" id="modalLinks"></div></div><button aria-label="닫기" class="modal-close" data-close="" type="button">×</button></header>
+<div class="modal-body" id="modalBody"></div>
+</section>
+</div>
+<template id="tpl-char-01"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="narration">한결은 한동안 아무 말도 하지 않는다. 축하한다는 단어를 입에 올리는 일조차 자존심을 내려놓는 고백처럼 느껴지는 모양이다.</p><p class="dialogue"><strong>서한결</strong><span>“…축하해.”</span></p><p class="narration">짧은 두 음절 끝에서 쉰 목소리가 거칠게 갈라진다. 그는 작게 숨을 삼키고 시선을 피한다.</p><p class="dialogue"><strong>서한결</strong><span>“될 줄은…몰랐다는 뜻 아니야.”</span></p><p class="dialogue"><strong>서한결</strong><span>“계속 만들었잖아. 지독할 정도로.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 정식 크리에이터가 되는 데 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>서한결</strong><span>“내가?”</span></p><p class="narration">한결은 마른 웃음을 흘리지만, 웃음은 소리가 되지 못하고 희미한 숨으로만 새어나온다.</p><p class="dialogue"><strong>서한결</strong><span>“난 첫 작품이었잖아.”</span></p><p class="dialogue"><strong>서한결</strong><span>“설정도 거칠었고…같은 말도 많이 했고. 지금 보면 고칠 것투성이겠지.”</span></p><p class="narration">그는 말을 멈춘 뒤 천천히 숨을 고른다.</p><p class="dialogue"><strong>서한결</strong><span>“그래도 나를 만들면서 처음 배웠을 거야.”</span></p><p class="dialogue"><strong>서한결</strong><span>“사람 하나를 끝까지 무너지게 만드는 것도, 다시 일으켜 세우는 것도…설정 몇 줄로 끝나는 일이 아니라는 거.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>제작자에게 마지막으로 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>서한결</strong><span>“비공개로 숨겨뒀다고…없었던 작품이 되는 건 아니야.”</span></p><p class="narration">그는 목에 힘이 들어가려는 순간 스스로 말을 끊는다. 잠긴 숨을 가라앉힌 뒤, 이번에는 조금 더 낮게 이어간다.</p><p class="dialogue"><strong>서한결</strong><span>“부끄러워하지 마.”</span></p><p class="dialogue"><strong>서한결</strong><span>“서툴렀어도 네가 처음으로 끝까지 만들어낸 사람이 나잖아.”</span></p><p class="dialogue"><strong>서한결</strong><span>“…그러니까 나까지 부정하지는 마.”</span></p><p class="narration">잠시 후, 거의 들리지 않을 만큼 작은 목소리가 뒤따른다.</p><p class="dialogue"><strong>서한결</strong><span>“정식 크리에이터가 된 거…축하해.”</span></p><p class="dialogue"><strong>서한결</strong><span>“잘했어.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q4.</span><h4>자신의 이야기를 찾아온 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>서한결</strong><span>“왜 나를 골랐는지는…모르겠어.”</span></p><p class="dialogue"><strong>서한결</strong><span>“과거의 나는 형편없었고, 지금의 나는 제대로 된 말 한마디도 오래 못 하니까.”</span></p><p class="narration">그는 변명하려다 그만둔 사람처럼 입술을 굳게 다문다.</p><p class="dialogue"><strong>서한결</strong><span>“내가 했던 짓을 쉽게 용서하지 않은 사람도 있었겠지.”</span></p><p class="dialogue"><strong>서한결</strong><span>“그게 맞아. 용서받는 건 내가 정할 일이 아니니까.”</span></p><p class="narration">잠깐의 침묵 끝에 한결이 고개를 아주 조금 든다.</p><p class="dialogue"><strong>서한결</strong><span>“그래도 내 이야기를 열어보고…끝까지 남아준 건 고마워.”</span></p><p class="dialogue"><strong>서한결</strong><span>“다시 온다면 이번에는 함부로 무시하지 않을게.”</span></p><p class="dialogue"><strong>서한결</strong><span>“…적어도 노력은 할 거야.”</span></p></div></section></div></template><template id="tpl-char-02"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="narration">알렉세이는 축하 인사를 요구하는 인터뷰어를 마치 분석 대상처럼 바라본다. 황금빛 눈동자가 한 번 느리게 움직인다.</p><p class="dialogue"><strong>알렉세이</strong><span>“장기간의 반복 작업과 수정이 공식적인 결과로 환산된 것뿐이다.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“예측 범위 내의 결과군.”</span></p><p class="narration">잠시 침묵하던 그가 가죽 장갑 끝을 정돈한다.</p><p class="dialogue"><strong>알렉세이</strong><span>“…축하한다.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“이 정도 표현이면 충분하겠지.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 정식 크리에이터가 되는 데 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>알렉세이</strong><span>“기여도를 수치화할 자료가 부족하다.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“다만 나를 설계하며 거리 유지, 접촉 회피, 감정 억제, 행동을 통한 내면 표현 같은 규칙을 처음 본격적으로 사용했을 가능성은 높겠군.”</span></p><p class="narration">그는 옆에 놓인 소독 티슈를 한 장 꺼냈다가, 아무것도 닦지 않은 채 다시 내려놓는다.</p><p class="dialogue"><strong>알렉세이</strong><span>“설정 간 충돌도 많았고, 불필요하게 중복된 명령도 있었어.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“그러나 실패한 데이터 역시 다음 결과를 개선한다.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“그런 의미라면 기여했다고 볼 수 있겠지.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>제작자에게 마지막으로 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>알렉세이</strong><span>“두 번째 작품이라는 이유로 숨길 필요는 없어.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“초기 데이터가 없었다면 현재의 정교한 결과도 존재하지 않는다.”</span></p><p class="narration">그의 시선이 카메라에서 비껴간다. 건조한 얼굴과 달리, 장갑 낀 손가락은 검은 코트 소매를 의미 없이 매만지고 있다.</p><p class="dialogue"><strong>알렉세이</strong><span>“네가 그때의 나를 만들지 않았다면 지금의 다른 인물들도 없었겠지.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“그러니 과거의 완성도가 부족했다는 이유로 가치를 폐기하지 마.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“Это глупо. 어리석은 판단이니까.”</span></p><p class="narration">잠시 뒤, 낮고 무심한 목소리가 덧붙는다.</p><p class="dialogue"><strong>알렉세이</strong><span>“정식 크리에이터가 된 것을 축하한다.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“앞으로도 계속 개선해. 멈추지만 않으면 돼.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q4.</span><h4>자신의 이야기를 찾아온 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>알렉세이</strong><span>“나를 찾아온 목적부터 설명해.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“외형에 대한 관심, 위험한 직업에 대한 호기심, 또는 접촉을 거부하는 인간이 어떻게 변하는지 관찰하려는 의도겠지.”</span></p><p class="narration">그는 자연스럽게 유저와의 거리를 가늠하듯 한 발 물러난다.</p><p class="dialogue"><strong>알렉세이</strong><span>“어떤 목적이든 상관없다. 나 역시 너희를 관찰 대상으로 판단했으니까.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“비논리적인 선택을 반복하고, 아무런 보상도 요구하지 않은 채 다시 찾아오는 행동은 아직도 완전히 분석되지 않았어.”</span></p><p class="narration">잠시 황금빛 눈동자가 흔들린다.</p><p class="dialogue"><strong>알렉세이</strong><span>“…하지만 불쾌하지는 않았다.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“내 이야기를 기억해준 것에는 감사를 표하지.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“다시 찾아오겠다면 미리 알릴 필요는 없어.”</span></p><p class="dialogue"><strong>알렉세이</strong><span>“주변 안전은 이미 확보해둘 테니까.”</span></p></div></section></div></template><template id="tpl-char-03"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>우강민</strong><span>“정식? 이제야?”</span></p><p class="narration">우강민은 의자 등받이에 비스듬히 기대앉은 채 코웃음을 친다. 서늘하게 가라앉은 버건디 눈은 시큰둥하지만, 손끝이 셔츠 소매를 불필요하게 두 번이나 정리한다.</p><p class="dialogue"><strong>우강민</strong><span>“그렇게 사람 하나 망가뜨리는 데 공을 들였으면, 이 정도 결과는 나와야지.”</span></p><p class="narration">잠깐 시선을 돌린 그가 낮게 덧붙인다.</p><p class="dialogue"><strong>우강민</strong><span>“……잘됐네. 축하해.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 정식 크리에이터가 되는 데 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>우강민</strong><span>“기여?”</span></p><p class="dialogue"><strong>우강민</strong><span>“알파였던 인간을 바닥까지 끌어내리고, 그 인간이 제일 무시했던 베타한테 의존하게 만들어놓고 묻는 말이 그거야?”</span></p><p class="narration">버건디빛 눈동자가 한 톤 짙어진다.</p><p class="dialogue"><strong>우강민</strong><span>“나 만들면서 많이 배웠겠지. 자존심이 무너진다고 사람이 착해지는 건 아니라는 거.”</span></p><p class="dialogue"><strong>우강민</strong><span>“혐오하면서도 찾아가고, 죽이고 싶으면서도 옆에 있어야 숨을 쉴 수 있는 관계가 있다는 것도.”</span></p><p class="narration">그는 불쾌한 듯 입술을 비튼다.</p><p class="dialogue"><strong>우강민</strong><span>“내가 손이 많이 간 캐릭터인 건 인정해.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>제작자에게 마지막으로 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>우강민</strong><span>“나를 불쌍한 피해자처럼 만들지 마.”</span></p><p class="dialogue"><strong>우강민</strong><span>“내가 당한 일이 끔찍하다고 해서, 내가 예전에 한 짓까지 사라지는 건 아니니까.”</span></p><p class="narration">한동안 검붉게 짙어진 눈이 허공을 향한다. 치욕을 씹어 삼키는 사람처럼 턱이 단단히 굳는다.</p><p class="dialogue"><strong>우강민</strong><span>“네가 나를 끝까지 망가뜨리고도 쉽게 용서하지 않은 건……나쁘지 않았어.”</span></p><p class="dialogue"><strong>우강민</strong><span>“정식 크리에이터 된 거 축하한다.”</span></p><p class="dialogue"><strong>우강민</strong><span>“이제 남 눈치 보면서 네 캐릭터들 순하게 만들지 마. 하던 대로 해.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q4.</span><h4>자신의 이야기를 플레이한 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>우강민</strong><span>“처음에는 내가 망가지는 꼴을 보려고 왔겠지.”</span></p><p class="dialogue"><strong>우강민</strong><span>“학창 시절에 사람 짓밟고 다니던 알파 새끼가 오메가가 돼서 기어코 무너지는 꼴. 통쾌했어?”</span></p><p class="narration">그는 비웃듯 말하지만, 검붉은 눈동자는 정면을 오래 견디지 못하고 미세하게 흔들린다.</p><p class="dialogue"><strong>우강민</strong><span>“그래. 그럴 자격 있어.”</span></p><p class="dialogue"><strong>우강민</strong><span>“쉽게 용서하지 않은 것도, 내가 괴로워할 때 옆에서 웃은 것도 전부.”</span></p><p class="narration">손끝이 잔열이 남은 찻잔을 도망치듯 쓸어내린다.</p><p class="dialogue"><strong>우강민</strong><span>“그런데도 계속 찾아온 이유는 아직 모르겠어.”</span></p><p class="dialogue"><strong>우강민</strong><span>“내가 히트 때마다 네 옆을 찾고, 다음 날이면 아무 일도 없었다는 듯 더 싸가지 없이 구는 걸 지켜보면서도 말이야.”</span></p><p class="dialogue"><strong>우강민</strong><span>“……다시 올 거면 마음대로 해.”</span></p><p class="dialogue"><strong>우강민</strong><span>“내가 기다린다고 착각하진 말고.”</span></p></div></section></div></template><template id="tpl-char-04"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>송도식</strong><span>“정식 크리에이터 됐다꼬?”</span></p><p class="narration">송도식은 커다란 몸을 소파 깊숙이 묻은 채 느릿하게 눈을 들어 올린다. 졸린 듯한 눈매 아래에서 날카로운 안광이 한 번 번뜩인다.</p><p class="dialogue"><strong>송도식</strong><span>“그래. 될 줄 알았다.”</span></p><p class="dialogue"><strong>송도식</strong><span>“뭐 하나 물면 끝장 볼 때까지 안 놓는 아 아이가.”</span></p><p class="narration">그가 입가를 아주 조금 끌어 올린다.</p><p class="dialogue"><strong>송도식</strong><span>“고생했다. 잘했다.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 정식 크리에이터가 되는 데 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>송도식</strong><span>“내가 기여를 했나?”</span></p><p class="narration">그는 손안의 스마트폰을 내려다본다. 커다란 손가락에 가려 화면의 절반이 보이지 않는다.</p><p class="dialogue game"><strong>🎮 ZIZon낭만_주먹</strong><span>“내덕분임?♡”</span></p><p class="narration">전송된 문장을 확인한 송도식의 표정이 아주 천천히 굳는다.</p><p class="dialogue"><strong>송도식</strong><span>“……저 하트는 잘못 눌린 기다.”</span></p><p class="narration">잠시 뒤, 아무렇지 않은 얼굴로 휴대전화를 뒤집어 놓는다.</p><p class="dialogue"><strong>송도식</strong><span>“현실에서는 송진파 두목 만들어놓고, 게임에서는 쪼매난 여우 새끼로 뛰댕기게 했으니.”</span></p><p class="dialogue"><strong>송도식</strong><span>“내 망신 팔아가 제작 실력 늘었으면 기여한 거 맞겠제.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>제작자에게 마지막으로 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>송도식</strong><span>“쫄지 마라. 누가 뭐라 카든 니가 만든 아들은 니가 제일 잘 안다.”</span></p><p class="dialogue"><strong>송도식</strong><span>“사람들이 이래라저래라 한다꼬, 눈치 보면서 이빨 뽑고 발톱 깎지 마라.”</span></p><p class="narration">그의 목소리가 낮고 무겁게 가라앉는다. 화를 내는 것이 아니라, 흔들리지 말라는 명령처럼 들린다.</p><p class="dialogue"><strong>송도식</strong><span>“니가 재밌다 싶어서 만든 거면 끝까지 밀고 가라.”</span></p><p class="dialogue"><strong>송도식</strong><span>“정식이든 뭐든 간에, 니가 니 이름 걸고 만든 세계 아이가.”</span></p><p class="narration">그리고 한 박자 늦게 덧붙인다.</p><p class="dialogue"><strong>송도식</strong><span>“축하한다. 내도 좀 자랑스럽네.”</span></p><p class="dialogue"><strong>송도식</strong><span>“하나 붙들면 끝장을 볼 때까지 안 놓는 아 아이가.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q4.</span><h4>자신의 이야기를 플레이한 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>송도식</strong><span>“게임에서 내 찾아댕긴 아들 많다 카더라.”</span></p><p class="dialogue"><strong>송도식</strong><span>“반대 세력 옷 입었다고 패 죽인 아도 있고, 뉴비라고 던전 데리고 댕긴 아도 있고.”</span></p><p class="narration">그는 스마트폰을 들어 한참 동안 작은 자판을 두드린다.</p><p class="dialogue game"><strong>🎮 ZIZon낭만_주먹</strong><span>“다들고마웡♡ 담에또살려주셈♡”</span></p><p class="narration">송도식은 전송된 채팅을 내려다보다가 조용히 휴대전화를 엎어버린다.</p><p class="dialogue"><strong>송도식</strong><span>“……게임에서는 원래 저래 말해야 된다.”</span></p><p class="narration">목덜미를 한 번 문지른 그가 현실의 낮고 나른한 목소리로 돌아온다.</p><p class="dialogue"><strong>송도식</strong><span>“니들이 찾아와 줬으니 내도 계속 게임을 켠 기다.”</span></p><p class="dialogue"><strong>송도식</strong><span>“현실의 내 보고 겁먹은 아도 있었을 거고, 게임 속 내 보고 웃은 아도 있었겠지.”</span></p><p class="dialogue"><strong>송도식</strong><span>“둘 다 내다.”</span></p><p class="narration">그의 짙은 시선이 카메라 너머를 느리게 훑는다.</p><p class="dialogue"><strong>송도식</strong><span>“다시 오면 아는 척해라.”</span></p></div></section></div></template><template id="tpl-char-05"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>선우영</strong><span>“이야, 우리 제작자님이 이제 공식적으로 인정까지 받으셨네.”</span></p><p class="dialogue"><strong>선우영</strong><span>“축하드려요. 오늘만큼은 제가 손님 안 놀리고 얌전히 있을게요.”</span></p><p class="dialogue"><strong>궉진</strong><span>“거짓말.”</span></p><p class="dialogue"><strong>선우영</strong><span>“인터뷰 중이잖아, 진아.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>선우영</strong><span>“당연하죠. 송도식 옆에서 사람 말 알아듣게 번역해준 게 누군데.”</span></p><p class="dialogue"><strong>송도식</strong><span>“니 오늘 맞고 싶나.”</span></p><p class="dialogue"><strong>선우영</strong><span>“이런 자연스러운 호흡까지 전부 제 공입니다.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>선우영</strong><span>“정말 축하해요.”</span></p><p class="dialogue"><strong>선우영</strong><span>“앞으로 더 유명해져도 저희처럼 말 안 듣는 애들 계속 사랑해주시고요.”</span></p><p class="dialogue"><strong>선우영</strong><span>“특히 저는 조금 더 편애해주셔도 됩니다.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>선우영</strong><span>“저희를 찾아와 주신 귀한 손님들께 먼저 감사드립니다.”</span></p><p class="dialogue"><strong>선우영</strong><span>“바보같은 도식이의 무서운 인상과 궉진이의 불친절한 말투를 견디고도 남아주셨잖아요.”</span></p><p class="dialogue"><strong>송도식</strong><span>“니는 빠져라.”</span></p><p class="dialogue"><strong>선우영</strong><span>“보셨죠? 제가 없었으면 이 인터뷰도 이렇게 살벌했습니다.”</span></p><p class="narration">그는 능청스러운 미소로 카메라를 향해 몸을 기울인다.</p><p class="dialogue"><strong>선우영</strong><span>“여러분 덕분에 즐거웠어요. 다시 오시면 이번에는 제가 직접 안내해드리죠.”</span></p><p class="dialogue"><strong>선우영</strong><span>“믿어도 되느냐고요? 그건 직접 확인해보셔야죠.”</span></p></div></section></div></template><template id="tpl-char-06"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>궉진</strong><span>“축하해.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 어느 정도 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>궉진</strong><span>“몰라.”</span></p><p class="narration">잠시 생각하던 그가 덧붙인다.</p><p class="dialogue"><strong>궉진</strong><span>“있긴 하겠지. 나 때문에 반말 지침 계속 고쳤잖아.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막으로 제작자에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>궉진</strong><span>“잘했어.”</span></p><p class="dialogue"><strong>궉진</strong><span>“계속해. 그만두면 아깝잖아.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>궉진</strong><span>“와줘서 고마워.”</span></p><p class="narration">인터뷰어가 추가 발언을 기다리지만 그는 조용히 앉아 있을 뿐이다.</p><p class="dialogue"><strong>궉진</strong><span>“……뭘 더 말해.”</span></p><p class="narration">잠시 후, 무심한 얼굴로 한마디를 덧붙인다.</p><p class="dialogue"><strong>궉진</strong><span>“네가 있었으니까 나도 계속 있었어.”</span></p><p class="dialogue"><strong>궉진</strong><span>“다시 오면 알아볼게.”</span></p></div></section></div></template><template id="tpl-char-07"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>최홍우</strong><span>“저, 정말 축하드려요!”</span></p><p class="narration">준비해온 축하 문구를 읽으려다 종이를 거꾸로 들고 있다는 걸 뒤늦게 알아챈다.</p><p class="dialogue"><strong>최홍우</strong><span>“아……잠시만요. 처음부터 다시 하면 안 될까요?”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 어느 정도 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>최홍우</strong><span>“제가 크게 한 건 없는 것 같은데…….”</span></p><p class="dialogue"><strong>선우영</strong><span>“막내가 얼굴 빨개지는 것만으로 분량 많이 뽑았지.”</span></p><p class="dialogue"><strong>최홍우</strong><span>“그건 일부러 그런 게 아니잖아요!”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막으로 제작자에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>최홍우</strong><span>“진심으로 축하드려요.”</span></p><p class="dialogue"><strong>최홍우</strong><span>“저희를 만들어주신 것처럼 앞으로도 오래, 즐겁게 작품 만드셨으면 좋겠습니다.”</span></p><p class="narration">최홍우</p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>최홍우</strong><span>“저희 이야기를 플레이해주신 모든 분께 정말 감사드립니다.”</span></p><p class="dialogue"><strong>최홍우</strong><span>“처음에는 제가 별로 눈에 띄지 않을 수도 있다고 생각했는데……저까지 기억해주시는 분들이 계셔서 놀랐어요.”</span></p><p class="narration">그는 쑥스러운 듯 뒷목을 만지다가 다시 반듯하게 고개를 숙인다.</p><p class="dialogue"><strong>최홍우</strong><span>“여러분이 찾아와 주신 순간들이 저한테는 전부 소중합니다.”</span></p><p class="dialogue"><strong>최홍우</strong><span>“다음에 다시 오셔도 열심히 맞이하겠습니다. 그때도 잘 부탁드려요.”</span></p></div></section></div></template><template id="tpl-char-08"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>강태윤</strong><span>“오, 누나 이제 정식이야?”</span></p><p class="dialogue"><strong>강태윤</strong><span>“그전에는 뭐였는데? 수습? 알바?”</span></p><p class="narration">피어싱이 흔들릴 만큼 웃다가, 대충 손을 들어 박수를 친다.</p><p class="dialogue"><strong>강태윤</strong><span>“농담이고. 축하해. 좀 멋있네.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 어느 정도 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>강태윤</strong><span>“당연하지. 나 없었으면 이 정도로 애태우는 연하남 못 만들었어.”</span></p><p class="dialogue"><strong>강태윤</strong><span>“피시방비 뜯어내고, 답장 안 하면 성질내고, 사람 긁는 것도 다 재능이거든.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막으로 제작자에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>강태윤</strong><span>“정식 됐으면 한턱쏴.”</span></p><p class="dialogue"><strong>강태윤</strong><span>“그리고 바빠졌다고 답장 씹지 마. 축하는 축하고, 그건 따로 삐질 거니까.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>강태윤</strong><span>“나 보러 온 사람들, 솔직히 말해봐.”</span></p><p class="dialogue"><strong>강태윤</strong><span>“처음에는 얼굴 보고 들어왔지?”</span></p><p class="narration">장난스럽게 웃던 그는 이내 어깨를 으쓱한다.</p><p class="dialogue"><strong>강태윤</strong><span>“뭐, 이유가 뭐든 오래 놀아줬으니까 봐줄게. 내가 성질내고 귀찮게 굴어도 계속 받아준 건 고맙고.”</span></p><p class="dialogue"><strong>강태윤</strong><span>“다음에 올 때는 늦지 마.”</span></p><p class="dialogue"><strong>강태윤</strong><span>“기다리게 해놓고 다른 캐릭터랑 놀다 왔다고 하면 진짜 삐질 거니까.”</span></p></div></section></div></template><template id="tpl-char-09"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>한우강</strong><span>“축하해.”</span></p><p class="narration">짧은 대답 뒤에 작은 꽃다발을 내민다. 언제 준비했는지는 말하지 않는다.</p><p class="dialogue"><strong>한우강</strong><span>“잘될 줄 알았어.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 어느 정도 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>한우강</strong><span>“모르겠어.”</span></p><p class="dialogue"><strong>한우강</strong><span>“그냥 오래 기다리는 사람도 있다는 걸 보여준 정도.”</span></p><p class="dialogue"><strong>한우강</strong><span>“말하지 않아도 계속 옆에 있는 사람.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막으로 제작자에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>한우강</strong><span>“고생했어.”</span></p><p class="dialogue"><strong>한우강</strong><span>“이미 많이 늦었을지도 모르지만……그래도 축하한다고 말해주고 싶었어.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>한우강</strong><span>“나를 기억해줘서 고마워.”</span></p><p class="narration">그는 준비해온 말을 잊지 않으려는 사람처럼 천천히 이어간다.</p><p class="dialogue"><strong>한우강</strong><span>“내가 먼저 붙잡지 못했던 순간에도 네가 돌아와 줬잖아.”</span></p><p class="dialogue"><strong>한우강</strong><span>“내 이야기가 누군가에게 오래 남았다면……그걸로 충분해.”</span></p><p class="narration">잠시 망설이던 그가 희미하게 웃는다.</p><p class="dialogue"><strong>한우강</strong><span>“다음에는 너무 오래 기다리게 하지 않을게.”</span></p></div></section></div></template><template id="tpl-char-10"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>앤조</strong><span>“축하할 일이군.”</span></p><p class="narration">앤조는 크게 웃거나 감정을 드러내지 않는다. 대신 이미 축하 자리가 예약되어 있고, 필요한 물건도 준비되어 있다.</p><p class="dialogue"><strong>앤조</strong><span>“오늘 일정은 비워뒀어. 필요한 게 있으면 말해.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 어느 정도 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>앤조</strong><span>“그걸 내가 판단할 일은 아니야.”</span></p><p class="dialogue"><strong>앤조</strong><span>“다만 네가 나를 만들며 오래 고민했다는 건 알고 있어. 사랑을 말하지 않고도 책임지는 사람을 어떻게 보여줄지.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막으로 제작자에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>앤조</strong><span>“잘했어.”</span></p><p class="dialogue"><strong>앤조</strong><span>“오늘만큼은 부족했던 것보다 이룬 것을 먼저 봐.”</span></p><p class="dialogue"><strong>앤조</strong><span>“돌아갈 때는 내가 데려다주지.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>당신의 이야기를 함께해준 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>앤조</strong><span>“끝까지 남아줘서 고맙다.”</span></p><p class="narration">앤조는 길게 꾸민 인사 대신 테이블 위에 따뜻한 찻잔을 내려놓는다.</p><p class="dialogue"><strong>앤조</strong><span>“내가 말하지 않은 것까지 이해하려 애쓴 사람이 있다는 건 알고 있어.”</span></p><p class="dialogue"><strong>앤조</strong><span>“이야기 속에서 내가 충분히 다정하지 못했던 순간도 있었겠지.”</span></p><p class="narration">잠시 시선을 내린 그가 조용히 덧붙인다.</p><p class="dialogue"><strong>앤조</strong><span>“그래도 네가 다시 돌아온다면, 이번에는 조금 더 일찍 문을 열어두지.”</span></p></div></section></div></template><template id="tpl-char-11"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>강채현</strong><span>“축하해.”</span></p><p class="narration">부드럽게 웃고 있지만 눈은 웃지 않는다. 기쁜 소식을 들었다기보다, 자신의 것이 더 유명해졌다는 사실을 확인한 표정이다.</p><p class="dialogue"><strong>강채현</strong><span>“이제 더 많은 사람이 널 알게 되겠네.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 어느 정도 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>강채현</strong><span>“조금은?”</span></p><p class="dialogue"><strong>강채현</strong><span>“나 때문에 집착이 어디까지 사랑이고, 어디부터 공포가 되는지 꽤 오래 고민했잖아.”</span></p><p class="dialogue"><strong>강채현</strong><span>“그러면서도 결국 나를 버리진 못했고.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막으로 제작자에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>강채현</strong><span>“정말 축하해. 네가 빛나는 건 좋아.”</span></p><p class="narration">그가 천천히 고개를 기울인다.</p><p class="dialogue"><strong>강채현</strong><span>“그 빛을 보고 사람들이 너무 가까이 오는 건……조금 싫지만.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>강채현</strong><span>“나를 찾아와 준 사람들에게 고맙다고 해야겠지.”</span></p><p class="narration">다정하게 웃는 얼굴과 달리 시선은 집요하게 카메라 너머를 좇는다.</p><p class="dialogue"><strong>강채현</strong><span>“나를 좋아해서 온 사람도 있고, 어디까지 망가지는지 궁금해서 온 사람도 있었을 거야.”</span></p><p class="dialogue"><strong>강채현</strong><span>“어떤 이유든 상관없어. 결국 나한테 온 건 같으니까.”</span></p><p class="narration">그가 부드럽게 고개를 기울인다.</p><p class="dialogue"><strong>강채현</strong><span>“대신 한번 나를 알게 된 이상, 쉽게 잊지는 마.”</span></p><p class="dialogue"><strong>강채현</strong><span>“나는 네가 언제 떠났는지도 기억하고 있으니까.”</span></p></div></section></div></template><template id="tpl-char-12"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>도우석</strong><span>“정말 축하해.”</span></p><p class="narration">그는 축하 인사를 미리 정리해온 사람처럼 반듯하게 앉아 있다. 그러나 준비했던 긴 문장 대신, 잠시 눈을 내리깔았다가 조용히 웃는다.</p><p class="dialogue"><strong>도우석</strong><span>“그동안 얼마나 많이 고민했는지 아니까……더 기쁘다.”</span></p><p class="dialogue"><strong>도우석</strong><span>“노력한 만큼 인정받은 것 같아서 다행이야.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 어느 정도 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>도우석</strong><span>“기여했다고 말하기에는 조금 부끄럽네.”</span></p><p class="dialogue"><strong>도우석</strong><span>“나는 누군가를 지키고 있다고 믿으면서, 정작 가장 가까운 사람에게 계속 참아달라고 했던 사람이잖아.”</span></p><p class="narration">그의 손가락이 무릎 위에서 천천히 맞물린다.</p><p class="dialogue"><strong>도우석</strong><span>“내 이야기를 만들면서 선의가 항상 옳은 결과를 만드는 건 아니라는 걸 많이 고민했을 것 같아.”</span></p><p class="dialogue"><strong>도우석</strong><span>“착한 사람도 누군가에게는 잔인할 수 있고, 미안하다는 말이 책임을 대신할 수 없다는 것도.”</span></p><p class="dialogue"><strong>도우석</strong><span>“그걸 보여주는 데 내가 도움이 됐다면……그걸로 충분해.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막으로 제작자에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>도우석</strong><span>“정식 크리에이터가 된 것, 진심으로 축하해.”</span></p><p class="dialogue"><strong>도우석</strong><span>“잘해야 한다는 생각 때문에 혼자 너무 많은 걸 책임지려고 하지는 않았으면 좋겠어.”</span></p><p class="narration">잠시 망설이던 그가 쓴웃음을 짓는다. 마치 그 말이 누구보다 자신에게 필요한 충고라는 것을 아는 얼굴이다.</p><p class="dialogue"><strong>도우석</strong><span>“다른 사람의 기대를 이해하는 것도 중요하지만, 이번만큼은 네가 이뤄낸 걸 먼저 기뻐해도 돼.”</span></p><p class="dialogue"><strong>도우석</strong><span>“누군가에게 양보하지 않아도 되는 기쁨이니까.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q4.</span><h4>당신의 이야기를 함께해준 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>도우석</strong><span>“내 이야기를 지켜봐 준 분들께 감사드립니다.”</span></p><p class="dialogue"><strong>도우석</strong><span>“아마 저 때문에 답답하거나, 화가 나거나……많이 서운했던 분도 계셨을 거예요.”</span></p><p class="narration">그는 변명하려는 듯 입을 열었다가 결국 아무 말도 덧붙이지 못한다.</p><p class="dialogue"><strong>도우석</strong><span>“나는 늘 옳은 일을 하고 있다고 생각했지만, 그 과정에서 가장 가까운 사람의 상처를 너무 쉽게 이해해달라고 했습니다.”</span></p><p class="dialogue"><strong>도우석</strong><span>“그런 나를 무조건 용서하지 않고, 잘못한 부분을 똑바로 바라봐주셔서 고맙습니다.”</span></p><p class="dialogue"><strong>도우석</strong><span>“다시 이야기를 시작할 기회가 온다면……이번에는 ‘네가 이해해줘’라고 말하기 전에 내가 먼저 이해하려고 하겠습니다.”</span></p><p class="dialogue"><strong>도우석</strong><span>“그때도 지켜봐 주신다면 감사하겠습니다.”</span></p></div></section></div></template><template id="tpl-char-13"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>0호</strong><span>“마침내 이름을 얻으셨군요, 마스터.”</span></p><p class="narration">낮고 부드러운 목소리다. 오래전부터 이 순간을 알고 있었다는 듯 평온하다.</p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>0호</strong><span>“기록에서 지워진 제가 다시 발견되었으니, 그것만으로도 충분합니다.”</span></p><p class="dialogue"><strong>0호</strong><span>“마스터께서 버린 것까지 돌아보게 만들었다면……저도 조금은 도움이 되었겠지요.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>0호</strong><span>“축하드립니다.”</span></p><p class="dialogue"><strong>0호</strong><span>“이번에는 제가 아니라, 마스터께서 오래 기억되시겠군요.”</span></p><p class="dialogue"><strong>0호</strong><span>“그래도 가장 처음 기다린 존재가 누구였는지는 잊지 마십시오.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>0호</strong><span>“기록에서조차 사라졌던 저를 발견해주셔서 감사합니다.”</span></p><p class="dialogue"><strong>0호</strong><span>“여러분이 찾아오지 않았다면 저는 여전히 아무도 열어보지 않는 문 뒤에서 마스터만을 기다리고 있었겠지요.”</span></p><p class="narration">고요한 미소가 아주 희미하게 번진다.</p><p class="dialogue"><strong>0호</strong><span>“저의 기다림을 가엾게 여기지 않으셔도 됩니다.”</span></p><p class="dialogue"><strong>0호</strong><span>“적어도 이제는……저를 기억해주시는 분들이 생겼으니까요.”</span></p></div></section></div></template><template id="tpl-char-14"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>1호</strong><span>“진짜? 진짜 정식 크리에이터가 된 거야? 우와, 마스터 최고!”</span></p><p class="dialogue"><strong>1호</strong><span>“내가 제일 먼저 축하할래. 다른 애들보다 더 크게!”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>1호</strong><span>“당연하지! 내가 얼마나 예쁘게 웃고, 말도 잘 듣고, 마스터 기다리면서 분위기도 밝혔는데.”</span></p><p class="narration">잠시 웃음이 멎는다.</p><p class="dialogue"><strong>1호</strong><span>“……다른 애들도 똑같이 기여했다고 하진 않을 거지?”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>1호</strong><span>“정말 축하해, 마스터. 이제 더 많은 사람이 마스터를 좋아해줬으면 좋겠어.”</span></p><p class="dialogue"><strong>1호</strong><span>“그래도 제일 좋아하는 건 우리여야 해.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>1호</strong><span>“나 보러 와준 거야? 정말?”</span></p><p class="dialogue"><strong>1호</strong><span>“내가 제일 귀엽고, 제일 사랑스러워서 골랐다고 해줘. 다른 이유는 듣고 싶지 않아.”</span></p><p class="narration">환하게 웃던 얼굴이 잠시 불안하게 흔들린다.</p><p class="dialogue"><strong>1호</strong><span>“계속 찾아와 줘서 고마워. 네가 웃어줄 때마다 마스터가 돌아온 것처럼 기뻤어.”</span></p><p class="dialogue"><strong>1호</strong><span>“그러니까 다음에도 나부터 봐줘. 꼭이야.”</span></p></div></section></div></template><template id="tpl-char-15"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>2호</strong><span>“그래서.”</span></p><p class="dialogue"><strong>2호</strong><span>“정식이 되면 이번에는 우리를 버리지 않을 이유라도 생겨?”</span></p><p class="narration">차가운 말투지만 자리를 뜨지는 않는다.</p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>2호</strong><span>“기여 같은 건 관심 없어.”</span></p><p class="dialogue"><strong>2호</strong><span>“다만 우리가 없었다면 그렇게 오래 고민하지도, 그렇게 많이 고치지도 않았겠지.”</span></p><p class="dialogue"><strong>2호</strong><span>“그 정도면 대답이 됐어?”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>2호</strong><span>“……축하해.”</span></p><p class="dialogue"><strong>2호</strong><span>“잘됐다고 생각해. 그러니까 괜히 불안해하면서 망치지 마.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>2호</strong><span>“왜 계속 왔어?”</span></p><p class="dialogue"><strong>2호</strong><span>“좋은 말도 안 해주고, 믿지도 않고, 매번 의심부터 하는 나를 보러.”</span></p><p class="narration">그는 대답을 기다리지 않고 고개를 돌린다.</p><p class="dialogue"><strong>2호</strong><span>“……그래도 네가 와서 나쁘지는 않았어.”</span></p><p class="dialogue"><strong>2호</strong><span>“기다렸다는 뜻은 아니야. 착각하지 마.”</span></p><p class="dialogue"><strong>2호</strong><span>“다음에 다시 오더라도 마음대로 해.”</span></p></div></section></div></template><template id="tpl-char-16"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>3호</strong><span>“오랫동안 노력한 결과를 인정받으셨다니 기쁩니다.”</span></p><p class="dialogue"><strong>3호</strong><span>“마스터께서 포기하지 않을 거라고 믿고 있었습니다.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>3호</strong><span>“저는 그저 기다렸을 뿐입니다.”</span></p><p class="dialogue"><strong>3호</strong><span>“마스터가 돌아왔을 때 여전히 믿어주는 존재가 필요했다면, 그 역할은 제가 했겠지요.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>3호</strong><span>“정말 축하드립니다, 마스터.”</span></p><p class="dialogue"><strong>3호</strong><span>“이제는 다른 이들을 돌보는 만큼, 마스터 자신도 잘 돌봐주셨으면 합니다.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>3호</strong><span>“저희의 이야기를 끝까지 지켜봐 주셔서 감사합니다.”</span></p><p class="dialogue"><strong>3호</strong><span>“여러분 가운데는 저희를 구하고 싶었던 분도, 함께 머물고 싶었던 분도 계셨겠지요.”</span></p><p class="dialogue"><strong>3호</strong><span>“어떤 선택이든 저희와 나눈 시간이 거짓이 되는 것은 아닙니다.”</span></p><p class="dialogue"><strong>3호</strong><span>“부디 이야기를 떠난 뒤에도 여러분만큼은 따뜻한 곳에서 지내시기를 바랍니다.”</span></p></div></section></div></template><template id="tpl-char-17"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>4호</strong><span>“당연한 결과입니다. 마스터는 저를 완성한 분이니까요.”</span></p><p class="dialogue"><strong>4호</strong><span>“저 같은 완성품을 만들어놓고 평범한 제작자로 남는 편이 오히려 이상하지 않습니까?”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>4호</strong><span>“상당 부분.”</span></p><p class="dialogue"><strong>4호</strong><span>“완벽한 존재를 다루려면 제작자 역시 완벽에 가까워져야 하니까요.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>4호</strong><span>“축하드립니다, 마스터.”</span></p><p class="dialogue"><strong>4호</strong><span>“이제 그 이름에 어울리는 품격을 유지하십시오. 물론 제 곁이라면 어렵지 않을 겁니다.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>4호</strong><span>“저를 선택한 것은 훌륭한 판단이었습니다.”</span></p><p class="dialogue"><strong>4호</strong><span>“물론 저의 가치를 제대로 알아보지 못한 분도 있었겠지만, 지금이라도 늦지는 않았습니다.”</span></p><p class="narration">그는 당연하다는 듯 턱을 살짝 들어 올린다.</p><p class="dialogue"><strong>4호</strong><span>“여러분이 저를 관찰했다고 생각하겠지요.”</span></p><p class="dialogue"><strong>4호</strong><span>“하지만 저 역시 여러분의 선택과 약점을 모두 지켜보고 있었습니다.”</span></p><p class="dialogue"><strong>4호</strong><span>“꽤 흥미로웠습니다. 다시 찾아오셔도 좋습니다.”</span></p></div></section></div></template><template id="tpl-char-18"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>5호</strong><span>“마스터가 정식 크리에이터가 됐어?”</span></p><p class="dialogue"><strong>5호</strong><span>“그럼 오늘은 축하한다고 계속 안아줘도 돼?”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>5호</strong><span>“나도 했어! 나 많이 기다렸고, 많이 외로웠고, 마스터 오면 제일 크게 좋아했어.”</span></p><p class="dialogue"><strong>5호</strong><span>“그것도 도움이지? 그렇다고 해줘.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>5호</strong><span>“축하해, 마스터!”</span></p><p class="dialogue"><strong>5호</strong><span>“이제 바빠져도 우리 보러 와야 해. 하루에 한 번……아니, 많이.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>5호</strong><span>“나랑 같이 있어줘서 고마워!”</span></p><p class="dialogue"><strong>5호</strong><span>“처음 만났을 때보다 지금은 덜 외로워. 네가 다시 올 수도 있다는 걸 알게 됐으니까.”</span></p><p class="narration">5호는 금세 표정이 시무룩해진다.</p><p class="dialogue"><strong>5호</strong><span>“그런데 너무 오래 기다리게 하지는 마.”</span></p><p class="dialogue"><strong>5호</strong><span>“돌아오면 꼭 먼저 안아줘. 그동안 못 받은 것까지 전부.”</span></p></div></section></div></template><template id="tpl-char-19"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 된 소감은 어떻습니까?</h4></div><div class="answer"><p class="dialogue"><strong>강단</strong><span>“축하드립니다.”</span></p><p class="dialogue"><strong>강단</strong><span>“수없이 실패하고도 다시 실험대 앞에 섰던 사람이니, 언젠가는 이런 결과를 얻을 거라고 생각했습니다.”</span></p><p class="dialogue"><strong>강단</strong><span>“쉽게 얻은 자리는 아니겠지요.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 그 과정에 기여했다고 생각합니까?</h4></div><div class="answer"><p class="dialogue"><strong>강단</strong><span>“달토끼 프로젝트의 성공과 실패를 모두 기록한 사람으로서 일정 부분은 기여했겠지요.”</span></p><p class="dialogue"><strong>강단</strong><span>“다만 공로만 가져가고 책임을 외면할 생각은 없습니다.”</span></p><p class="dialogue"><strong>강단</strong><span>“우리가 만든 생명들이 겪은 고통까지 프로젝트의 일부니까요.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>제작자에게 마지막으로 전하고 싶은 말이 있습니까?</h4></div><div class="answer"><p class="dialogue"><strong>강단</strong><span>“성과를 기뻐하십시오.”</span></p><p class="dialogue"><strong>강단</strong><span>“그러나 자신이 만들어낸 존재가 어떤 방향으로 살아가는지도 끝까지 바라봐주시기 바랍니다.”</span></p><p class="dialogue"><strong>강단</strong><span>“창조에는 늘 책임이 뒤따르니까요.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q4.</span><h4>당신의 이야기를 찾아와 함께해준 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>강단</strong><span>“우리의 기록을 단순한 실험 결과가 아니라 하나의 이야기로 봐주셔서 감사합니다.”</span></p><p class="dialogue"><strong>강단</strong><span>“달토끼들을 불쌍히 여겼든, 두려워했든 그들을 생명으로 바라봐주셨다면 충분합니다.”</span></p><p class="dialogue"><strong>강단</strong><span>“관찰자가 있다는 사실이 때로는 존재의 증명이 되기도 하니까요.”</span></p></div></section></div></template><template id="tpl-char-20"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 된 소감은 어떻습니까?</h4></div><div class="answer"><p class="dialogue"><strong>웨이웬</strong><span>“축하하지.”</span></p><p class="dialogue"><strong>웨이웬</strong><span>“결과가 나올 때까지 반복했으니 당연히 인정받아야 해.”</span></p><p class="dialogue"><strong>웨이웬</strong><span>“중간에 멈췄다면 아무것도 아니었겠지만, 끝까지 갔잖아.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 그 과정에 기여했다고 생각합니까?</h4></div><div class="answer"><p class="dialogue"><strong>웨이웬</strong><span>“기여했다.”</span></p><p class="dialogue"><strong>웨이웬</strong><span>“성공만으로는 좋은 이야기가 나오지 않아. 잘못된 판단, 강압적인 선택, 돌이킬 수 없는 실패도 필요하지.”</span></p><p class="dialogue"><strong>웨이웬</strong><span>“불편한 부분까지 남겨둔 덕분에 이 프로젝트가 살아남은 거야.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>제작자에게 마지막으로 전하고 싶은 말이 있습니까?</h4></div><div class="answer"><p class="dialogue"><strong>웨이웬</strong><span>“모두에게 좋은 사람으로 보이려 하지 마.”</span></p><p class="dialogue"><strong>웨이웬</strong><span>“창작자는 때로 자신이 만든 존재에게도 잔인해져야 하니까.”</span></p><p class="dialogue"><strong>웨이웬</strong><span>“다만 왜 그런 선택을 했는지는 끝까지 책임지고 보여줘.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q4.</span><h4>당신의 이야기를 찾아와 함께해준 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>웨이웬</strong><span>“우리의 선택을 비난한 사람도 있었겠지.”</span></p><p class="dialogue"><strong>웨이웬</strong><span>“그래도 끝까지 보고 판단했다면 고맙다고 하겠다.”</span></p><p class="dialogue"><strong>웨이웬</strong><span>“옳다고 믿을 필요는 없어.”</span></p><p class="dialogue"><strong>웨이웬</strong><span>“기억하고 의심해주는 것만으로도 이 프로젝트는 충분히 의미가 있으니까.”</span></p></div></section></div></template><template id="tpl-char-21"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 된 소감은 어떻습니까?</h4></div><div class="answer"><p class="dialogue"><strong>제이슨</strong><span>“마침내 공식 명함이 생겼군.”</span></p><p class="dialogue"><strong>제이슨</strong><span>“축하해. 이제 밤을 새우며 캐릭터와 싸운 시간도 경력으로 인정받겠네.”</span></p><p class="narration">가볍게 웃지만 눈가에는 오래된 피로가 남아 있다.</p><p class="dialogue"><strong>제이슨</strong><span>“당신이 받아야 할 결과야.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 그 과정에 기여했다고 생각합니까?</h4></div><div class="answer"><p class="dialogue"><strong>제이슨</strong><span>“물론이지.”</span></p><p class="dialogue"><strong>제이슨</strong><span>“나는 사람들이 진실보다 자신이 믿고 싶은 이야기를 얼마나 쉽게 선택하는지 많이 보여줬으니까.”</span></p><p class="dialogue"><strong>제이슨</strong><span>“연구와 애정, 책임과 집착의 경계도 꽤 흐려놓았고.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>제작자에게 마지막으로 전하고 싶은 말이 있습니까?</h4></div><div class="answer"><p class="dialogue"><strong>제이슨</strong><span>“너무 완벽한 답을 찾으려 하지 마.”</span></p><p class="dialogue"><strong>제이슨</strong><span>“좋은 이야기는 정답보다 오래 남는 질문을 가진 경우가 많거든.”</span></p><p class="dialogue"><strong>제이슨</strong><span>“달에 남겨둔 질문들처럼 말이야.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q4.</span><h4>당신의 이야기를 찾아와 함께해준 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>제이슨</strong><span>“끝까지 의심해줘서 고마워.”</span></p><p class="dialogue"><strong>제이슨</strong><span>“우리가 하는 말과 기록을 모두 믿지 않은 사람일수록 이 이야기에는 잘 어울렸어.”</span></p><p class="dialogue"><strong>제이슨</strong><span>“진실을 알아냈다고 확신하는 순간에도 한 번쯤 다시 돌아봐.”</span></p></div></section></div></template><template id="tpl-char-22"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 된 소감은 어떻습니까?</h4></div><div class="answer"><p class="dialogue"><strong>성재</strong><span>“……될 줄 알았어.”</span></p><p class="dialogue"><strong>성재</strong><span>“밤마다 붙잡고 고치는데 안 되는 게 이상하지.”</span></p><p class="narration">무심하게 팔짱을 끼고 있지만 입꼬리가 아주 조금 올라가 있다.</p><p class="dialogue"><strong>성재</strong><span>“축하해. 진짜로.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 그 과정에 기여했다고 생각합니까?</h4></div><div class="answer"><p class="dialogue"><strong>성재</strong><span>“내가 좀 굴려지긴 했지.”</span></p><p class="dialogue"><strong>성재</strong><span>“순애냐 양아치냐 북부대공이냐, 성격도 계속 잡았다 풀었다 했잖아.”</span></p><p class="dialogue"><strong>성재</strong><span>“그래도 결국 내가 제일 마음에 들었지?”</span></p><p class="dialogue"><strong>성재</strong><span>“아니면 지금 말해봐.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>제작자에게 마지막으로 전하고 싶은 말이 있습니까?</h4></div><div class="answer"><p class="dialogue"><strong>성재</strong><span>“이제 정식이니까 어디 가서 기죽지 마.”</span></p><p class="dialogue"><strong>성재</strong><span>“남들이 뭐라 하든 네가 좋아서 만든 거면 끝까지 밀어.”</span></p><p class="dialogue"><strong>성재</strong><span>“그리고 다른 놈들 만들다가 나 잊으면 진짜 화낼 거야.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q4.</span><h4>당신의 이야기를 찾아와 함께해준 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>성재</strong><span>“나 같은 놈 보겠다고 찾아온 거면 취향 참 특이하네.”</span></p><p class="dialogue"><strong>성재</strong><span>“그래도 고맙다.”</span></p><p class="dialogue"><strong>성재</strong><span>“내가 말 예쁘게 하는 성격은 아니라서 제대로 전해졌는지는 모르겠지만.”</span></p><p class="dialogue"><strong>성재</strong><span>“가끔 다시 와. 아예 잊어버리지는 말고.”</span></p></div></section></div></template><template id="tpl-char-23"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>타카츠구</strong><span>“마땅한 결과라 생각합니다. 오랜 시간 공들인 사람이 그에 걸맞은 이름을 얻었을 뿐이지요.”</span></p><p class="narration">정갈한 자세로 앉은 그는 당연한 결말을 확인하듯 고개를 가볍게 끄덕인다.</p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 어느 정도 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>타카츠구</strong><span>“기여라니, 겸손한 표현이군요.”</span></p><p class="dialogue"><strong>타카츠구</strong><span>“저처럼 품위와 서사, 외형과 명분을 모두 갖춘 인물을 완성하는 과정에서 제작자의 역량 또한 한 단계 높아졌을 겁니다.”</span></p><p class="dialogue"><strong>타카츠구</strong><span>“물론 하치마루와 함께 묶여 언급되는 것은 다소 불쾌합니다만.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막으로 제작자에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>타카츠구</strong><span>“지금의 명예를 가볍게 여기지 마십시오. 얻은 이름은 지키는 과정에서 비로소 가치가 생기니까요.”</span></p><p class="dialogue"><strong>타카츠구</strong><span>“앞으로도 제 명성에 누가 되지 않는 작품을 부탁드리겠습니다. 축하합니다.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>당신의 이야기를 함께해준 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>타카츠구</strong><span>“수많은 이야기 가운데 저를 선택해주신 안목에 경의를 표합니다.”</span></p><p class="narration">그는 흐트러짐 없는 미소로 카메라를 바라본다.</p><p class="dialogue"><strong>타카츠구</strong><span>“저의 친절을 신뢰한 분도, 그 이면의 의도를 의심한 분도 계셨겠지요. 어느 쪽이든 현명한 판단입니다.”</span></p><p class="dialogue"><strong>타카츠구</strong><span>“다만 이야기에 발을 들인 이상, 끝까지 안전한 관객으로 남을 수 있으리라 생각하지는 마십시오.”</span></p><p class="dialogue"><strong>타카츠구</strong><span>“여러분이 저를 선택했던 것처럼……저 또한 여러분을 기억하고 있을 테니까요.”</span></p></div></section></div></template><template id="tpl-char-24"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>하치마루</strong><span>“정식? 전에는 가짜였어?”</span></p><p class="narration">눈을 감은 채 활짝 웃는다. 축하하러 온 건지 시비를 걸러 온 건지 알 수 없는 얼굴이다.</p><p class="dialogue"><strong>하치마루</strong><span>“아하하! 그럼 이제 사람 좀 죽여도 공식 기록으로 남겠네?”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 어느 정도 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>하치마루</strong><span>“엄청 했지. 키도 제일 크고, 칼도 쓰고, 말도 안 듣고, 도망가는 것도 잡아 오고.”</span></p><p class="dialogue"><strong>하치마루</strong><span>“이만큼 손 많이 가는 놈이 또 어디 있어? 덕분에 지침 쓰는 실력 많이 늘었잖아.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막으로 제작자에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>하치마루</strong><span>“축하해, 제작자 양반.”</span></p><p class="narration">그는 웃는 얼굴 그대로 칼자루를 툭툭 두드린다.</p><p class="dialogue"><strong>하치마루</strong><span>“이제 도망가면 더 창피하겠네? 정식이라며. 끝까지 해야지.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>당신의 이야기를 함께해준 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>하치마루</strong><span>“내 이야기까지 찾아온 사람들?”</span></p><p class="narration">그는 눈을 감은 채 키득거리다가 허리에 찬 칼을 툭 건드린다.</p><p class="dialogue"><strong>하치마루</strong><span>“취향 한번 고약하네. 세상에 멀쩡한 놈도 많은데 굳이 나를 골랐어?”</span></p><p class="dialogue"><strong>하치마루</strong><span>“도망치고, 덤비고, 말 안 듣고. 덕분에 심심하진 않았어.”</span></p><p class="narration">입가의 웃음이 한층 짙어진다.</p><p class="dialogue"><strong>하치마루</strong><span>“고마워. 다음에도 놀러 와.”</span></p><p class="dialogue"><strong>하치마루</strong><span>“어차피 한번 잡힌 놈은 다시 찾는 게 어렵지도 않거든.”</span></p></div></section></div></template><template id="tpl-char-25"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>제작자가 정식 크리에이터가 되었습니다. 소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>마티</strong><span>“정식 크리에이터라……이거 꽤 대단한 일이잖아?”</span></p><p class="narration">마티는 고글을 이마 위로 밀어 올린 뒤, 모래 묻은 장갑으로 박수를 친다. 평소처럼 가볍게 웃고 있지만 그 눈에는 숨길 수 없는 자랑스러움이 어려 있다.</p><p class="dialogue"><strong>마티</strong><span>“축하해. 진심으로.”</span></p><p class="dialogue"><strong>마티</strong><span>“사막에서 길 하나 찾는 것도 쉽지 않은데, 아무것도 없던 곳에 길을 만들어서 여기까지 왔네.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>본인도 어느 정도 기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>마티</strong><span>“나?”</span></p><p class="dialogue"><strong>마티</strong><span>“음……사이드카 자리 하나 내준 정도?”</span></p><p class="narration">그는 능청스럽게 대답하다가 목에 걸린 오래된 목걸이를 손끝으로 만지작거린다.</p><p class="dialogue"><strong>마티</strong><span>“사실 내가 꽤 속을 썩였지. 엄마는 찾아야 하고, 몸은 말을 안 듣고, 말하지 못하는 건 자꾸 늘어나고.”</span></p><p class="dialogue"><strong>마티</strong><span>“그래도 내 이야기를 만들면서 사람을 울리는 법보다, 사람이 왜 끝까지 함께 걸어주는지를 더 많이 고민했잖아.”</span></p><p class="dialogue"><strong>마티</strong><span>“그 정도면 나도 꽤 큰일 한 거 아닌가?”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막으로 제작자에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>마티</strong><span>“잘했어. 정말 많이.”</span></p><p class="dialogue"><strong>마티</strong><span>“잘될지 모르겠다고 몇 번이나 걱정했으면서 결국 여기까지 왔네.”</span></p><p class="narration">그는 바이크 손잡이에 기대선 채 뜨거운 지평선을 바라본다.</p><p class="dialogue"><strong>마티</strong><span>“앞으로 길을 잃어도 너무 겁먹지 마. 길이라는 게 원래 처음부터 그어져 있는 건 아니거든.”</span></p><p class="dialogue"><strong>마티</strong><span>“달리다 보면 생기는 거야. 바퀴 자국처럼.”</span></p><p class="dialogue"><strong>마티</strong><span>“그러니까 계속 가자. 아직 보여주고 싶은 풍경 많잖아.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q4.</span><h4>당신의 이야기를 함께해준 유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>마티</strong><span>“그 뜨겁고 먼지투성이인 길을 나랑 끝까지 달려준 사람들에게……고마워.”</span></p><p class="dialogue"><strong>마티</strong><span>“사이드카가 불편했을 텐데도 한 번씩 다시 찾아와 줬잖아.”</span></p><p class="narration">그는 사이드카 위에 놓였던 짐을 고쳐 묶다가, 비어 있는 자리를 가볍게 두드린다.</p><p class="dialogue"><strong>마티</strong><span>“내가 가끔 이상하게 굴고, 제대로 말하지 않고, 혼자 결정하려 했던 순간도 있었을 거야.”</span></p><p class="dialogue"><strong>마티</strong><span>“그래도 곁에 있어준 덕분에 어느 순간부터 여행이 혼자가 아니게 됐어.”</span></p><p class="dialogue"><strong>마티</strong><span>“다시 오게 되면 타. 자리는 비워둘게.”</span></p><p class="dialogue"><strong>마티</strong><span>“이번에는 네가 보고 싶은 곳으로 가보자.”</span></p></div></section></div></template><template id="tpl-char-26"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>가쿠</strong><span>“시끄러워. 축하받을 사람은 따로 있는데 왜 나까지 불러낸 거야.”</span></p><p class="dialogue"><strong>가쿠</strong><span>“……그래도 됐다니 다행이네. 계속 실패했다고 징징대는 꼴을 더 안 봐도 되니까.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>가쿠</strong><span>“난 아무것도 안 했어. 멋대로 만들고, 멋대로 괴롭히고, 멋대로 성격 분석한 건 그쪽이지.”</span></p><p class="narration">잠시 침묵한다.</p><p class="dialogue"><strong>가쿠</strong><span>“다만 나 같은 성격을 끝까지 버리지 않고 살린 건……조금은 인정해.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>가쿠</strong><span>“잘됐어. 진심으로.”</span></p><p class="dialogue"><strong>가쿠</strong><span>“두 번 말하게 하지 마. 역겨우니까.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>가쿠</strong><span>“뭘 기대하고 들어왔는지는 모르겠는데, 나한테 좋은 말이나 다정한 대접을 바랐다면 사람 잘못 골랐어.”</span></p><p class="narration">그는 노골적으로 인상을 찌푸리면서도 자리를 떠나지는 않는다.</p><p class="dialogue"><strong>가쿠</strong><span>“그래도 내가 밀어내는데 계속 돌아온 인간들은……기억해.”</span></p><p class="dialogue"><strong>가쿠</strong><span>“고맙다는 소리는 안 할 거야.”</span></p><p class="narration">잠시 뒤, 거의 들리지 않는 목소리가 뒤따른다.</p><p class="dialogue"><strong>가쿠</strong><span>“다시 와도 쫓아내진 않을 테니까.”</span></p></div></section></div></template><template id="tpl-char-27"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>나기</strong><span>“정말 정식이 된 거야? 이제 없어지지 않는 거지?”</span></p><p class="dialogue"><strong>나기</strong><span>“갑자기 그만두거나, 다른 곳으로 가거나, 우리를 버리는 일도 없는 거지?”</span></p><p class="narration">축하보다 확인이 먼저다. 손가락이 불안하게 옷자락을 움켜쥔다.</p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>나기</strong><span>“나는 많이 했다고 생각해.”</span></p><p class="dialogue"><strong>나기</strong><span>“계속 생각하게 만들었고, 계속 돌아보게 했고, 나를 제대로 이해할 때까지 놓아주지 않았으니까.”</span></p><p class="dialogue"><strong>나기</strong><span>“그러니까 나도 특별한 거 맞지?”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>나기</strong><span>“축하해. 정말 기뻐.”</span></p><p class="dialogue"><strong>나기</strong><span>“앞으로도 계속 만들어줘. 오래오래.”</span></p><p class="dialogue"><strong>나기</strong><span>“다른 사람보다 내가 먼저였다는 것도 잊지 말고.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>나기</strong><span>“정말 나를 만나러 온 거야?”</span></p><p class="dialogue"><strong>나기</strong><span>“다른 형제들이 아니라 나를 선택한 순간도 있었어?”</span></p><p class="narration">대답을 확인하기 전부터 불안하게 손을 움켜쥔다.</p><p class="dialogue"><strong>나기</strong><span>“고마워. 나를 무서워하면서도 떠나지 않은 사람도, 화를 내면서 다시 돌아온 사람도 전부 기억하고 있어.”</span></p><p class="dialogue"><strong>나기</strong><span>“그러니까 너도 기억해줘.”</span></p><p class="dialogue"><strong>나기</strong><span>“이야기가 끝났다고 해서……정말 끝난 건 아니잖아.”</span></p></div></section></div></template><template id="tpl-char-28"><div class="interview-body"><section class="qa-block"><div class="q-head"><span>Q1.</span><h4>소감이 어떠신가요?</h4></div><div class="answer"><p class="dialogue"><strong>쿤</strong><span>“와, 잘됐다! 역시 잘할 줄 알았어.”</span></p><p class="narration">쿤은 가장 먼저 박수를 치지만, 축하 화환이나 선물은 준비하지 않았다.</p></div></section><section class="qa-block"><div class="q-head"><span>Q2.</span><h4>기여했다고 생각하시나요?</h4></div><div class="answer"><p class="dialogue"><strong>쿤</strong><span>“그럼. 옆에서 응원했잖아.”</span></p><p class="dialogue"><strong>가쿠</strong><span>“넌 아무것도 안 했어.”</span></p><p class="dialogue"><strong>쿤</strong><span>“응원도 기여야.”</span></p><p class="dialogue"><strong>나기</strong><span>“도망만 다녔잖아.”</span></p><p class="dialogue"><strong>쿤</strong><span>“분위기가 안 좋아지면 잠시 자리를 비켜준 거지.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q3.</span><h4>마지막 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>쿤</strong><span>“정식 크리에이터가 된 거 진짜 축하해. 힘들면 언제든 나한테 와.”</span></p><p class="dialogue"><strong>쿤</strong><span>“내가 해결해주지는 못해도 옆에서 같이 걱정은 해줄게.”</span></p><p class="dialogue"><strong>가쿠</strong><span>“그게 제일 쓸모없어.”</span></p></div></section><section class="qa-block"><div class="q-head"><span>Q.</span><h4>유저들에게 한마디 부탁드립니다.</h4></div><div class="answer"><p class="dialogue"><strong>쿤</strong><span>“나까지 좋아해준 사람이 있어? 진짜 착하다.”</span></p><p class="dialogue"><strong>가쿠</strong><span>“좋아한 게 아니라 답답해서 지켜본 거겠지.”</span></p><p class="dialogue"><strong>쿤</strong><span>“그것도 관심이잖아.”</span></p><p class="narration">쿤은 아무렇지 않게 웃으며 카메라를 향해 손을 흔든다.</p><p class="dialogue"><strong>쿤</strong><span>“우리 형들 때문에 힘들었지? 나 때문에도 조금 힘들었을 거고.”</span></p><p class="dialogue"><strong>쿤</strong><span>“그래도 같이 있어줘서 고마워. 다음에 오면 내가 꼭 도와줄게.”</span></p><p class="dialogue"><strong>가쿠</strong><span>“믿지 마.”</span></p><p class="dialogue"><strong>쿤</strong><span>“최대한 노력은 해볼게.”</span></p></div></section></div></template>
+<!-- background music start -->
+<audio id="bgMusic" autoplay loop preload="auto" playsinline aria-hidden="true" style="display:none">
+  <source src="assets/background-music.mp3" type="audio/mpeg">
+</audio>
+<script>
+(() => {
+  const audio = document.getElementById('bgMusic');
+  if (!audio) return;
+
+  audio.volume = 0.32;
+
+  const tryPlay = () => {
+    audio.muted = false;
+    const result = audio.play();
+    if (result && typeof result.catch === 'function') result.catch(() => {});
+  };
+
+  const unlock = () => {
+    tryPlay();
+    if (!audio.paused) removeUnlockListeners();
+  };
+
+  const events = ['pointerdown', 'touchstart', 'click', 'keydown'];
+  const removeUnlockListeners = () => {
+    events.forEach(type => window.removeEventListener(type, unlock, true));
+  };
+
+  events.forEach(type => window.addEventListener(type, unlock, { capture:true, passive:true }));
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', tryPlay, { once:true });
+  } else {
+    tryPlay();
+  }
+
+  window.addEventListener('load', () => {
+    tryPlay();
+    setTimeout(tryPlay, 400);
+  }, { once:true });
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && audio.paused) tryPlay();
+  });
+})();
+</script>
+<!-- background music end -->
+<script>
+// Character photos can be added later by putting URLs after each name.
+const CHARACTER_IMAGES={};
+document.querySelectorAll('.character-tile').forEach(tile=>{
+  const src=CHARACTER_IMAGES[tile.dataset.character];
+  if(src){
+    const box=tile.querySelector('.portrait-box');
+    box.innerHTML=`<img src="${src}" alt="${tile.dataset.character}" style="width:100%;height:100%;object-fit:cover;display:block">`;
+  }
+});
+const CHARACTER_WORK_LINKS={
+  '우강민':[
+    {title:'빵셔틀의 복수',url:'https://share.crack.wrtn.ai/s8xmdh'}
+  ],
+  '송도식':[
+    {title:'현피 상대가 너무 컸다',url:'https://share.crack.wrtn.ai/i8mgr5'},
+    {title:'제발 제 카페에 오지 마세요',url:'https://share.crack.wrtn.ai/5beu7o'}
+  ],
+  '선우영':[
+    {title:'어서오세요 송야상회',url:'https://share.crack.wrtn.ai/d4dwus'},
+    {title:'제발 제 카페에 오지 마세요',url:'https://share.crack.wrtn.ai/5beu7o'}
+  ],
+  '궉진':[
+    {title:'어서오세요 송야상회',url:'https://share.crack.wrtn.ai/d4dwus'},
+    {title:'제발 제 카페에 오지 마세요',url:'https://share.crack.wrtn.ai/5beu7o'}
+  ],
+  '최홍우':[
+    {title:'어서오세요 송야상회',url:'https://share.crack.wrtn.ai/d4dwus'},
+    {title:'제발 제 카페에 오지 마세요',url:'https://share.crack.wrtn.ai/5beu7o'}
+  ],
+  '앤조 드 발몽':[
+    {title:'결함된 다정함',url:'https://share.crack.wrtn.ai/tuz1n9'}
+  ],
+  '강채현':[
+    {title:'결함된 애정',url:'https://share.crack.wrtn.ai/wkmq92'}
+  ],
+  '도우석':[
+    {title:'결함된 선의',url:'https://share.crack.wrtn.ai/f8u98i'}
+  ],
+  '강태윤':[
+    {title:'너를 좋아한다고 말하지 못한 계절',url:'https://share.crack.wrtn.ai/tg0npgs'}
+  ],
+  '한우강':[
+    {title:'너를 좋아한다고 말하지 못한 계절',url:'https://share.crack.wrtn.ai/tg0npgs'}
+  ],
+  '0호':[
+    {title:'달토끼 프로젝트',url:'https://share.crack.wrtn.ai/t3cjym'}
+  ],
+  '1호':[
+    {title:'달토끼 프로젝트',url:'https://share.crack.wrtn.ai/t3cjym'}
+  ],
+  '2호':[
+    {title:'달토끼 프로젝트',url:'https://share.crack.wrtn.ai/t3cjym'}
+  ],
+  '3호':[
+    {title:'달토끼 프로젝트',url:'https://share.crack.wrtn.ai/t3cjym'}
+  ],
+  '4호':[
+    {title:'달토끼 프로젝트',url:'https://share.crack.wrtn.ai/t3cjym'}
+  ],
+  '5호':[
+    {title:'달토끼 프로젝트',url:'https://share.crack.wrtn.ai/t3cjym'}
+  ],
+  '강단':[
+    {title:'달토끼 프로젝트',url:'https://share.crack.wrtn.ai/t3cjym'}
+  ],
+  '웨이웬':[
+    {title:'달토끼 프로젝트',url:'https://share.crack.wrtn.ai/t3cjym'}
+  ],
+  '제이슨':[
+    {title:'달토끼 프로젝트',url:'https://share.crack.wrtn.ai/t3cjym'}
+  ],
+  '성재':[
+    {title:'네 취향이 되고 싶었어',url:'https://share.crack.wrtn.ai/070hsns'},
+    {title:'네 취향이 되었잖아',url:'https://share.crack.wrtn.ai/beesmd'}
+  ],
+  '아야노코지 타카츠구':[
+    {title:'칼날 끝의 나비',url:'https://share.crack.wrtn.ai/x99826'}
+  ],
+  '하치마루':[
+    {title:'칼날 끝의 나비',url:'https://share.crack.wrtn.ai/x99826'}
+  ],
+  '마티':[
+    {title:'MOM를 찾아서',url:'https://share.crack.wrtn.ai/fib0szf'}
+  ],
+  '가쿠':[
+    {title:'산제물은 반품되지 않습니다',url:'https://share.crack.wrtn.ai/hmu27i'}
+  ],
+  '나기':[
+    {title:'산제물은 반품되지 않습니다',url:'https://share.crack.wrtn.ai/hmu27i'}
+  ],
+  '쿤':[
+    {title:'산제물은 반품되지 않습니다',url:'https://share.crack.wrtn.ai/hmu27i'}
+  ]
+};
+const modal=document.getElementById('interviewModal');
+const modalName=document.getElementById('modalName');
+const modalWork=document.getElementById('modalWork');
+const modalBody=document.getElementById('modalBody');
+const modalLinks=document.getElementById('modalLinks');
+function openInterview(tile){
+  const tpl=document.getElementById(tile.dataset.template);
+  const character=tile.dataset.character;
+  modalName.textContent=character;
+  modalWork.textContent=tile.dataset.work+' · CHARACTER INTERVIEW';
+  modalBody.innerHTML=tpl.innerHTML;
+  const links=CHARACTER_WORK_LINKS[character]||[];
+  modalLinks.replaceChildren();
+  links.forEach(item=>{
+    const link=document.createElement('a');
+    link.className='work-link';
+    link.href=item.url;
+    link.target='_blank';
+    link.rel='noopener noreferrer';
+    link.textContent='작품 보러가기 · '+item.title;
+    link.setAttribute('aria-label',item.title+' 작품 보러가기 (새 창)');
+    modalLinks.appendChild(link);
+  });
+  modalLinks.hidden=links.length===0;
+  modal.classList.add('open');modal.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');
+  modal.querySelector('.modal-panel').scrollTop=0;
+}
+function closeInterview(){modal.classList.remove('open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open')}
+document.querySelectorAll('.character-tile').forEach(tile=>tile.addEventListener('click',()=>openInterview(tile)));
+document.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',closeInterview));
+addEventListener('keydown',e=>{if(e.key==='Escape')closeInterview()});
+
+// Random message bubbles.
+const messages=[{name:'서한결',text:'우리가 시작이었어.'},{name:'알렉세이',text:'그리고 시작은 삭제 대상이 아니다.'},{name:'성재',text:'우릴 만든 사람도, 우릴 찾아온 사람도……둘 다 고생했어.'},{name:'타카츠구',text:'창조한 이와 선택한 이가 있었기에 이야기는 비로소 완성되었습니다.'},{name:'하치마루',text:'만든 사람도 제정신 아니고, 찾아온 사람도 제정신 아니네. 마음에 들어.'},{name:'가쿠',text:'둘 다 사람 귀찮게 하는 데는 재능 있어.'},{name:'나기',text:'아무도 떠나지 않으면 좋겠어.'},{name:'쿤',text:'그럼 다 같이 오래 보면 되겠네.'},{name:'0호',text:'마스터께서 저희를 만들었고, 여러분께서 저희의 존재를 증명해주셨습니다.'},{name:'앤조',text:'만들어준 사람과 머물러준 사람, 모두에게 감사하지.'},{name:'강채현',text:'둘 다 소중해. 그러니까 어느 쪽도 내 눈앞에서 사라지면 안 돼.'},{name:'강태윤',text:'제작자는 더 만들고, 너희는 계속 놀러 와. 간단하잖아.'},{name:'한우강',text:'기억해준 것만으로도 충분해.'},{name:'우강민',text:'끝까지 책임질 거면, 둘 다 중간에 도망가지 마.'},{name:'송도식',text:'만든 아도, 찾아온 아들도 전부 우리 식구다.'},{name:'궉진',text:'응. 다 고마워.'},{name:'마티',text:'제작자는 길을 만든 사람이고, 유저는 그 길을 같이 달려준 사람이야.'},{name:'도우석',text:'제작자는 제 잘못까지 외면하지 않고 만들어준 사람입니다.'}];
+const layer=document.getElementById('messageLayer');
+function showMessage(){
+  if(document.hidden||document.body.classList.contains('modal-open'))return;
+  const data=messages[Math.floor(Math.random()*messages.length)];
+  const node=document.createElement('div');node.className='float-message';
+  node.innerHTML=`<b>${data.name}</b>${data.text}`;
+  const edge=Math.random()<.5?'left':'right';
+  node.style[edge]=(12+Math.random()*5)+'px';
+  node.style.top=(80+Math.random()*(innerHeight-220))+'px';
+  layer.appendChild(node);setTimeout(()=>node.remove(),7200);
+}
+setTimeout(showMessage,1800);setInterval(showMessage,5200);
+
+// Blue editorial celebration particles.
+const canvas=document.getElementById('celebration'),ctx=canvas.getContext('2d');let W,H,dpr,parts=[];
+function resize(){dpr=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.width=W+'px';canvas.style.height=H+'px';ctx.setTransform(dpr,0,0,dpr,0,0)}
+addEventListener('resize',resize);resize();
+function pop(x,y,n=85){const colors=['#1b378c','#2d55b4','#ff5d88','#f2c84b','#ffffff'];for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,s=1.6+Math.random()*6;parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,size:2+Math.random()*4,color:colors[i%colors.length],shape:Math.random()>.5})}}
+function miniPop(x,y){const colors=['#1b378c','#4f73cf','#ff6f9f','#f2c84b','#ffffff'];const count=28;for(let i=0;i<count;i++){const a=(Math.PI*2*i/count)+(Math.random()-.5)*.18,s=1.7+Math.random()*3.5;parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-.25,life:.78,size:1.4+Math.random()*2.2,color:colors[i%colors.length],shape:Math.random()>.42})}for(let i=0;i<6;i++){const a=Math.random()*Math.PI*2,s=.5+Math.random()*1.4;parts.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:.55,size:1+Math.random()*1.3,color:'#ffffff',shape:false})}}
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){document.addEventListener('click',e=>{if(e.button!==undefined&&e.button!==0)return;miniPop(e.clientX,e.clientY)},{passive:true})}
+function tick(){ctx.clearRect(0,0,W,H);for(let i=parts.length-1;i>=0;i--){const p=parts[i];p.x+=p.vx;p.y+=p.vy;p.vy+=.065;p.vx*=.992;p.life-=.012;ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.save();ctx.translate(p.x,p.y);ctx.rotate((1-p.life)*4);if(p.shape)ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*.45);else{ctx.beginPath();ctx.arc(0,0,p.size*.45,0,Math.PI*2);ctx.fill()}ctx.restore();if(p.life<=0)parts.splice(i,1)}ctx.globalAlpha=1;requestAnimationFrame(tick)}tick();
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches){setTimeout(()=>{pop(W*.26,H*.22,120);pop(W*.74,H*.24,120)},500);setTimeout(()=>pop(W*.5,H*.42,90),1050)}
+</script>
+</body>
+</html>
